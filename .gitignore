@@ -1,0 +1,5 @@
+venv/
+
+trips_count_predictor/data/*
+trips_count_predictor/results/*
+trips_count_predictor/figures/*
