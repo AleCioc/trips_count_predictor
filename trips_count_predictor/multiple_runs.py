@@ -22,7 +22,6 @@ for month in range(5, 9):
 config_grid = ConfigGrid(multiple_runs_default_config)
 validators_input_dicts_tuples = []
 for i in range(len(config_grid.conf_list)):
-	print(config_grid.conf_list[i])
 	validators_input_dicts_tuples.append({
 		"trips_count": trips_count,
 		"trainer_single_run_config": config_grid.conf_list[i]
