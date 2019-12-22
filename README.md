@@ -1,1 +1,0 @@
-# trips_count_predictor
