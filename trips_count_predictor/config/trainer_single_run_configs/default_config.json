@@ -2,9 +2,9 @@
 
 	"start": 1,
 	"depth": 24,
-	"training_policy": "sliding",
+	"training_policy": "expanding",
 	"training_size": 168,
-    "training_update_t": 24,
+    "training_update_t": 1,
 	"regr_type": "lr",
 	"dim_red_type": "",
 	"dim_red_param": 0.7,

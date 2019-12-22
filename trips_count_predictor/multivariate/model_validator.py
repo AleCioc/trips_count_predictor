@@ -85,16 +85,15 @@ class ModelValidator:
 			)
 		elif self.training_policy == "expanding":
 			tscv = TimeSeriesSplit(
-				n_splits = len(self.X)//self.training_update_t
+				n_splits = (len(self.X)-1)//self.training_update_t
 			)
 
 		split_seq_n_index = []
 
 		for train_index, test_index in tscv.split(self.X):
 
-			if self.training_policy == "sliding":
-				if len(train_index) < self.training_size:
-					continue
+			if len(train_index) < self.training_size+1:
+				continue
 
 			if self.dim_red_type == "autocorr":
 				self.X_train = filter_df_features(
