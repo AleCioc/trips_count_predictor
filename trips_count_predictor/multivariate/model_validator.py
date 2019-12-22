@@ -98,7 +98,7 @@ class ModelValidator:
 
 			if self.dim_red_type == "autocorr":
 				self.X_train = filter_df_features(
-						self.trips_count,
+						self.y.iloc[train_index].copy(),
 						self.X.iloc[train_index].copy(),
 						self.dim_red_param
 				)
