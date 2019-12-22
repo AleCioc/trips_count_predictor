@@ -12,9 +12,12 @@ from trips_count_predictor.config.trainer_multiple_runs_configs.default_config i
 
 
 loader = CityLoader("Minneapolis")
-trips_count = loader.load_resampled_trips_data(
-	"city_of_minneapolis", 2019, 5, '1h'
-)
+trips_count = pd.Series(name="count")
+for month in range(5, 9):
+	trips_count = pd.concat([
+		trips_count,
+		loader.load_resampled_trips_data("city_of_minneapolis", 2019, month, '1h')
+	])
 
 config_grid = ConfigGrid(multiple_runs_default_config)
 validators_input_dicts_tuples = []

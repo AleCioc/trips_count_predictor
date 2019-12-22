@@ -92,8 +92,9 @@ class ModelValidator:
 
 		for train_index, test_index in tscv.split(self.X):
 
-			if len(train_index) < self.training_size+1:
-				continue
+			if self.training_policy == "sliding":
+				if len(train_index) < self.training_size:
+					continue
 
 			if self.dim_red_type == "autocorr":
 				self.X_train = filter_df_features(
@@ -141,8 +142,8 @@ class ModelValidator:
 #                 columns=self.df_coef.columns
 #         )
 
-		self.last_coefs = trainer.coefs
-		self.last_predictor = predictor
+		# self.last_coefs = trainer.coefs
+		# self.last_predictor = predictor
 		self.get_output()
 
 		self.regression_plotter = TimeSeriesRegressionPlotter(
