@@ -125,7 +125,7 @@ class ModelValidator:
 				self.X_test,
 				self.y.iloc[test_index],
 				self.trainer_config,
-				trainer.pipeline
+				trainer
 			)
 			predictor.predict()
 

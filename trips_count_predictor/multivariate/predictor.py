@@ -16,14 +16,14 @@ class TimeSeriesPredictor():
             X_test,
             y_test,
             trainer_config,
-            train_pipeline,
+            trainer,
     ):
 
         self.X_test = X_test
         self.y_test = y_test
         self.trainer_config = trainer_config
 
-        self.pipeline = train_pipeline
+        self.trainer = trainer
         self.start = trainer_config["start"]
         self.depth = trainer_config["depth"]
 
@@ -34,7 +34,7 @@ class TimeSeriesPredictor():
 
     def predict(self):
         self.y_hat_test = pd.Series(
-            self.pipeline.predict(self.X_test),
+            self.trainer.search.predict(self.X_test),
             index=self.X_test.index
         )
 
@@ -48,7 +48,7 @@ class TimeSeriesPredictor():
         self.results_dict["rel"] = percentage_error(
             self.y_test, self.y_hat_test
         )
-        # self.results_dict["r2"] = r2_score(
-        #     self.y_test, self.y_hat_test
-        # )
+        self.results_dict["r2"] = r2_score(
+            self.y_test, self.y_hat_test
+        )
         return pd.Series(self.results_dict)
