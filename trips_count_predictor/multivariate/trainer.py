@@ -162,6 +162,7 @@ class TimeSeriesTrainer:
 		self.get_hyperparams_grid()
 		self.get_hyperparams_grid_search()
 		self.search.fit(self.X, self.y)
+		self.cv_results = self.search.cv_results_
 		self.best_regressor = self.get_best_params_regressor(self.search.best_params_)
 		self.pipeline.named_steps["regressor"] = self.best_regressor
 		self.best_params = self.search.best_params_

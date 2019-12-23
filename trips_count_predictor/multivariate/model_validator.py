@@ -67,6 +67,7 @@ class ModelValidator:
 		self.X_train = pd.DataFrame()
 		self.X_test = pd.DataFrame()
 
+		self.cv_results = pd.DataFrame()
 		self.df_coef = pd.DataFrame(columns=self.X.columns)
 		self.last_predictor = None
 
@@ -132,7 +133,14 @@ class ModelValidator:
 			self.y_test = pd.concat([self.y_test, predictor.y_test])
 			self.y_hat_test = pd.concat([self.y_hat_test, predictor.y_hat_test])
 			self.y_hat_test.loc[self.y_hat_test < 0] = 0
-			# self.df_coef = pd.concat([self.df_coef, pd.DataFrame(trainer.coefs).T])
+			self.cv_results = pd.concat(
+				[self.cv_results, pd.DataFrame(trainer.cv_results)],
+				ignore_index=True
+			)
+			self.df_coef = pd.concat(
+				[self.df_coef, pd.DataFrame(trainer.coefs).T],
+				ignore_index=True
+			)
 			split_seq_n_index += [self.y.iloc[test_index].index[0]]
 
 			if self.training_update_t > 1:
@@ -195,5 +203,17 @@ class ModelValidator:
 			os.path.join(
 				self.output_path,
 				"best_params.csv"
+			)
+		)
+		self.cv_results.to_csv(
+			os.path.join(
+				self.output_path,
+				"cv_results.csv"
+			)
+		)
+		self.df_coef.to_csv(
+			os.path.join(
+				self.output_path,
+				"df_coef.csv"
 			)
 		)
