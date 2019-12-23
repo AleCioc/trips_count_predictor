@@ -27,9 +27,12 @@ def create_df_features(trips_count, trainer_config):
 
 	if trainer_config['use_weather']:
 		loader = CityLoader("Minneapolis")
-		weather = loader.load_resampled_trips_data(
-			"city_of_minneapolis", 2019, 5, '1h'
-		)
+		weather = pd.DataFrame()
+		for month in range(5, 9):
+			weather = pd.concat([
+				weather,
+				loader.load_resampled_weather_data("asos", 2019, month, '1h')
+			])
 		df_features = df_features.join(weather)
 
 	if trainer_config['use_y']:
@@ -38,7 +41,7 @@ def create_df_features(trips_count, trainer_config):
 			axis=1, sort=False
 		).dropna()
 
-	return df_features.drop("count", axis=1)
+	return df_features
 
 
 def filter_df_features(trips_count, df_features, threshold):

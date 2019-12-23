@@ -1,6 +1,10 @@
+import os
 import pandas as pd
+
 from sklearn.model_selection import TimeSeriesSplit
 
+from trips_count_predictor.utils.path_utils import check_create_path
+from trips_count_predictor.config.config import single_run_results_path
 from trips_count_predictor.multivariate.trainer import TimeSeriesTrainer
 from trips_count_predictor.multivariate.predictor import TimeSeriesPredictor
 from trips_count_predictor.multivariate.data_prep import create_df_features
@@ -14,8 +18,6 @@ from trips_count_predictor.multivariate.plotter import TimeSeriesRegressionPlott
 
 def run_model_validator (validators_input_dict):
 
-	print (validators_input_dict)
-
 	trips_count = validators_input_dict["trips_count"]
 	trainer_single_run_config = validators_input_dict["trainer_single_run_config"]
 
@@ -24,7 +26,6 @@ def run_model_validator (validators_input_dict):
 		trips_count,
 		trainer_single_run_config
 	)
-	print(validator.X.shape)
 	validator.run()
 	return validator.get_output()
 
@@ -73,6 +74,7 @@ class ModelValidator:
 		self.rel_err = []
 		self.rel_err2 = []
 		self.chosen_features = []
+		self.best_params = []
 
 	def run (self):
 
@@ -117,6 +119,7 @@ class ModelValidator:
 				self.trainer_config
 			)
 			trainer.run()
+			self.best_params += [trainer.best_params]
 
 			predictor = TimeSeriesPredictor(
 				self.X_test,
@@ -144,7 +147,8 @@ class ModelValidator:
 
 		# self.last_coefs = trainer.coefs
 		# self.last_predictor = predictor
-		self.get_output()
+		self.output = self.get_output()
+		self.save_output()
 
 		self.regression_plotter = TimeSeriesRegressionPlotter(
 				self.trips_count,
@@ -172,3 +176,24 @@ class ModelValidator:
 			self.y_test, self.y_hat_test
 		)
 		return pd.Series(self.results_dict)
+
+	def save_output (self):
+		model_conf_string = "_".join([str(v) for v in self.trainer_config.values()])
+		check_create_path(single_run_results_path)
+		self.output_path = os.path.join(
+			single_run_results_path,
+			model_conf_string
+		)
+		check_create_path(self.output_path)
+		self.output.to_csv(
+			os.path.join(
+				self.output_path,
+				"output_series.csv"
+			), header=True
+		)
+		pd.DataFrame(self.best_params).to_csv(
+			os.path.join(
+				self.output_path,
+				"best_params.csv"
+			)
+		)

@@ -118,14 +118,15 @@ class TimeSeriesTrainer:
 		self.steps.append(("dim_reduction", self.dim_reduction))
 		self.steps.append(("regressor", self.regr))
 		self.pipeline = Pipeline(self.steps)
-		# self.get_cv()
-		# self.cv_results = pd.DataFrame(cross_validate(
-		# 	self.pipeline,
-		# 	self.X, self.y,
-		# 	scoring=self.scorers,
-		# 	cv=self.cv,
-		# 	return_train_score=False)
-		# )
+		self.get_cv()
+		self.cv_results = pd.DataFrame(cross_validate(
+			self.pipeline,
+			self.X, self.y,
+			scoring=self.scorers,
+			cv=self.cv,
+			return_train_score=False)
+		)
+		self.best_params = self.pipeline._final_estimator.get_params()
 
 		self.pipeline.fit(self.X, self.y)
 		self.y_hat = pd.Series(self.pipeline.predict(self.X), index=self.X.index)

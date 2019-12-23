@@ -50,7 +50,17 @@ root_results_path = os.path.join(
 	"results"
 )
 
+single_run_results_path = os.path.join(
+	root_results_path,
+	"single_run"
+)
+
 default_results_path = os.path.join(
 		root_results_path,
 		"multiple_runs_default_config_results.csv"
+	)
+
+cluster_results_path = os.path.join(
+		root_results_path,
+		"multiple_runs_cluster_config_results.csv"
 	)
