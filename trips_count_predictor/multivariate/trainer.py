@@ -134,11 +134,10 @@ class TimeSeriesTrainer:
 		self.search = GridSearchCV(
 			self.pipeline,
 			self.hyperparams_grid,
-			cv=2,
+			cv=3,
 			scoring=self.scorers,
 			return_train_score=False,
 			refit="mean_absolute_error",
-			n_jobs=-1
 		)
 
 	def get_feature_importances(self):
