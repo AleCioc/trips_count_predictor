@@ -115,6 +115,7 @@ class TimeSeriesTrainer:
 			}
 		elif self.regr_type == "svr":
 			self.hyperparams_grid = {
+				"gamma": ["scale"],
 				"kernel": ["linear", "poly", "rbf"],
 				"C": [0.1, 1, 10, 100, 1000]
 			}
@@ -137,6 +138,7 @@ class TimeSeriesTrainer:
 			scoring=self.scorers,
 			return_train_score=False,
 			refit="mean_absolute_error",
+			n_jobs=-1
 		)
 
 	def get_feature_importances(self):
