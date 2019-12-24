@@ -14,6 +14,7 @@ from trips_count_predictor.config.config_grid import ConfigGrid
 from trips_count_predictor.config.trainer_multiple_runs_configs.default_config import multiple_runs_default_config
 from trips_count_predictor.config.trainer_multiple_runs_configs.cluster_config_task1 import multiple_runs_cluster_config
 
+from sklearn.utils import parallel_backend
 
 loader = CityLoader("Minneapolis")
 trips_count = pd.Series(name="count")
@@ -23,11 +24,12 @@ for month in range(5, 9):
 		loader.load_resampled_trips_data("city_of_minneapolis", 2019, month, '1h')
 	])
 
-if len(sys.argv) == 2:
+if len(sys.argv) > 1:
+
 	if sys.argv[1] == "cluster":
 		config_grid = ConfigGrid(multiple_runs_cluster_config)
-else:
-	config_grid = ConfigGrid(multiple_runs_default_config)
+	else:
+		config_grid = ConfigGrid(multiple_runs_default_config)
 
 validators_input_dicts_tuples = []
 for i in range(len(config_grid.conf_list)):
@@ -36,12 +38,13 @@ for i in range(len(config_grid.conf_list)):
 		"trainer_single_run_config": config_grid.conf_list[i]
 	})
 
-with mp.Pool(n_cores_remote) as pool:
+with parallel_backend('threading'):
+	with mp.Pool(n_cores_remote) as pool:
 
-	validators_output_list = pool.map(
-		run_model_validator,
-		validators_input_dicts_tuples
-	)
+		validators_output_list = pool.map(
+			run_model_validator,
+			validators_input_dicts_tuples
+		)
 
 if len(sys.argv) == 2:
 	if sys.argv[1] == "cluster":
