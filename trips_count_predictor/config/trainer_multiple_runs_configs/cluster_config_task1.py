@@ -1,6 +1,6 @@
 multiple_runs_cluster_config = {
 	"start": [1],
-	"depth": [1, 4, 8, 12, 24],
+	"depth": [1, 2, 3, 4, 5],
 	"training_policy": ["sliding"],
 	"training_size": [168],
 	"training_update_t": [24],
