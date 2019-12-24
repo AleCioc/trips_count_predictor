@@ -1,10 +1,11 @@
 {
 
 	"start": 1,
-	"depth": 24,
+	"depth": 1,
 	"training_policy": "sliding",
 	"training_size": 168,
     "training_update_t": 24,
+    "scaler_type": "",
 	"regr_type": "svr",
 	"dim_red_type": "",
 	"dim_red_param": 0,

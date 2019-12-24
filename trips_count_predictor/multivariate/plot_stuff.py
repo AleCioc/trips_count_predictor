@@ -96,8 +96,10 @@ def plot_result(y_data, y_pred_series, alg):
 
     if alg == 'lr': label_alg = 'Linear Regression'
     elif alg == 'ridge': label_alg = 'Ridge Regression'
-    elif alg == 'lasso': label_alg = 'Lasso Regression'
-    elif alg == 'svr': label_alg = 'SVR'
+    elif alg == 'omp': label_alg = 'Orthogonal Matching Pursuit'
+    elif alg == 'brr': label_alg = 'Bayesian Ridge Regression'
+    elif alg == 'lsvr': label_alg = 'Linear Support Vector Regression'
+    elif alg == 'svr': label_alg = 'Support Vector Regression'
     elif alg == 'rf': label_alg = 'Random Forest Regression'
 
     ax.plot(y_data, color='g', label='True Values')

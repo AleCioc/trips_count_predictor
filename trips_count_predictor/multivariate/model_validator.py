@@ -1,4 +1,6 @@
 import os
+import datetime
+
 import pandas as pd
 
 from sklearn.model_selection import TimeSeriesSplit
@@ -72,8 +74,6 @@ class ModelValidator:
 		self.last_predictor = None
 
 		self.results_dict = {}
-		self.rel_err = []
-		self.rel_err2 = []
 		self.chosen_features = []
 		self.best_params = []
 
@@ -91,6 +91,7 @@ class ModelValidator:
 				n_splits = (len(self.X)-1)//self.training_update_t
 			)
 
+		start_time = datetime.datetime.now()
 		split_seq_n_index = []
 
 		for train_index, test_index in tscv.split(self.X):
@@ -143,9 +144,13 @@ class ModelValidator:
 			)
 			split_seq_n_index += [self.y.iloc[test_index].index[0]]
 
-			if self.training_update_t > 1:
-				self.rel_err.append(self.get_output()['rel'])
-				self.rel_err2.append(percentage_error(predictor.y_test, predictor.y_hat_test))
+		print(
+			self.trainer_config["regr_type"],
+			"validator exec time:",
+			(datetime.datetime.now()-start_time).total_seconds()
+		)
+
+		self.validation_time = (datetime.datetime.now()-start_time).total_seconds()
 
 #        self.df_coef = pd.DataFrame(
 #                 self.df_coef.values,
@@ -183,6 +188,9 @@ class ModelValidator:
 		self.results_dict["r2"] = r2_score(
 			self.y_test, self.y_hat_test
 		)
+		self.results_dict["mean_fit_time"] = self.cv_results.mean_fit_time.mean()
+		self.results_dict["validation_time"] = self.validation_time
+
 		return pd.Series(self.results_dict)
 
 	def save_output (self):

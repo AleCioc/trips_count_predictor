@@ -7,10 +7,15 @@ from sklearn.pipeline import Pipeline
 
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Ridge
+from sklearn.linear_model import OrthogonalMatchingPursuit
+from sklearn.linear_model import BayesianRidge
+from sklearn.svm import LinearSVR
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+
 from sklearn.decomposition import PCA
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import mutual_info_regression
@@ -23,7 +28,7 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import make_scorer
 
 from trips_count_predictor.config.config import model_pickles_path
-
+from trips_count_predictor.multivariate.hyperparams_grids import hyperparams_grids
 
 class TimeSeriesTrainer:
 
@@ -42,12 +47,12 @@ class TimeSeriesTrainer:
 		self.regr_type = trainer_config["regr_type"]
 		self.regr = None
 
-		# self.scaler_type = trainer_config["scaler_type"]
+		self.scaler_type = trainer_config["scaler_type"]
 		self.dim_red_type = trainer_config["dim_red_type"]
 		self.dim_red_param = trainer_config["dim_red_param"]
 		self.dim_reduction = None
 
-		# self.scaler = None
+		self.scaler = None
 		self.scorers = None
 		self.hyperparams_grid = None
 		self.search = None
@@ -63,22 +68,21 @@ class TimeSeriesTrainer:
 	def get_scaler(self):
 		if self.scaler_type == "std":
 			self.scaler = StandardScaler()
+		if self.scaler_type == "minmax":
+			self.scaler = MinMaxScaler()
 
 	def get_regressor(self):
-
-		# lr_params = {
-		# 	'normalize': True
-		# }
-		#
-		# rf_params = {
-		# 	'n_estimators': 85,
-		# 	'random_state': 42
-		# }
 
 		if self.regr_type == "lr":
 			self.regr = LinearRegression()
 		elif self.regr_type == "ridge":
 			self.regr = Ridge()
+		elif self.regr_type == "omp":
+			self.regr = OrthogonalMatchingPursuit()
+		elif self.regr_type == "brr":
+			self.regr = BayesianRidge()
+		elif self.regr_type == "lsvr":
+			self.regr = LinearSVR()
 		elif self.regr_type == "svr":
 			self.regr = SVR()
 		elif self.regr_type == "rf":
@@ -102,28 +106,7 @@ class TimeSeriesTrainer:
 
 	def get_hyperparams_grid(self):
 
-		if self.regr_type == "lr":
-			self.hyperparams_grid = {
-				"normalize": [True, False],
-				"fit_intercept": [True, False]
-			}
-		elif self.regr_type == "ridge":
-			self.hyperparams_grid = {
-				"normalize": [True, False],
-				"fit_intercept": [True, False],
-				"alpha": [0.001, 0.01, 0.1, 1, 10]
-			}
-		elif self.regr_type == "svr":
-			self.hyperparams_grid = {
-				"gamma": ["scale"],
-				"kernel": ["linear", "poly", "rbf"],
-				"C": [100]
-			}
-		elif self.regr_type == "rf":
-			self.hyperparams_grid = {
-				"random_state": [1],
-				"n_estimators": [60, 80, 100],
-			}
+		self.hyperparams_grid = hyperparams_grids[self.regr_type]
 
 		new_grid = {}
 		for k in self.hyperparams_grid.keys():
@@ -135,15 +118,12 @@ class TimeSeriesTrainer:
 			self.pipeline,
 			self.hyperparams_grid,
 			cv=3,
-			scoring=self.scorers,
 			return_train_score=False,
-			refit="mean_absolute_error",
 		)
 
 	def get_feature_importances(self):
 
-		if self.regr_type in ['lr', 'ridge'] or\
-		(self.regr_type == "svr" and self.best_params["regressor__kernel"] == "linear"):
+		if self.regr_type in ['lr', 'ridge', 'omp', 'brr', 'lsvr']:
 			self.coefs = pd.Series(
 				self.pipeline.named_steps["regressor"].coef_,
 				index=self.X.columns
@@ -169,10 +149,10 @@ class TimeSeriesTrainer:
 	def run(self):
 
 		self.get_scorers()
-		# self.get_scaler()
+		self.get_scaler()
 		self.get_dim_reduction()
 
-		# self.steps.append(("scaler", self.scaler))
+		self.steps.append(("scaler", self.scaler))
 		self.steps.append(("dim_reduction", self.dim_reduction))
 		self.steps.append(("regressor", self.regr))
 		self.pipeline = Pipeline(self.steps)
