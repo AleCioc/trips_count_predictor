@@ -38,6 +38,8 @@ for i in range(len(config_grid.conf_list)):
 		"trainer_single_run_config": config_grid.conf_list[i]
 	})
 
+import threading
+threading.current_thread().name == 'MainThread'
 with parallel_backend('multiprocessing'):
 	with mp.Pool(n_cores_remote) as pool:
 		validators_output_list = pool.map(
