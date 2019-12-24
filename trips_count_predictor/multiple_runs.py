@@ -12,7 +12,7 @@ from trips_count_predictor.config.config import default_results_path
 from trips_count_predictor.config.config import cluster_results_path
 from trips_count_predictor.config.config_grid import ConfigGrid
 from trips_count_predictor.config.trainer_multiple_runs_configs.default_config import multiple_runs_default_config
-from trips_count_predictor.config.trainer_multiple_runs_configs.cluster_config import multiple_runs_cluster_config
+from trips_count_predictor.config.trainer_multiple_runs_configs.cluster_config_task1 import multiple_runs_cluster_config
 
 
 loader = CityLoader("Minneapolis")

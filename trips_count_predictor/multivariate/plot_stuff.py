@@ -94,13 +94,11 @@ def plot_result(y_data, y_pred_series, alg):
 
     plt.xlabel('Hours', fontsize=16, labelpad=15)
 
-    if alg == 'ma': label_alg = 'Moving Average'
-    elif alg == 'lv': label_alg = 'Last Value Benchmark'
-    elif alg == 'lr': label_alg = 'Linear Regression'
+    if alg == 'lr': label_alg = 'Linear Regression'
+    elif alg == 'ridge': label_alg = 'Ridge Regression'
     elif alg == 'lasso': label_alg = 'Lasso Regression'
     elif alg == 'svr': label_alg = 'SVR'
     elif alg == 'rf': label_alg = 'Random Forest Regression'
-    elif alg == 'gb': label_alg = 'Gradient Boosting Regression'
 
     ax.plot(y_data, color='g', label='True Values')
     ax.plot(y_pred_series, color='coral', label=label_alg)

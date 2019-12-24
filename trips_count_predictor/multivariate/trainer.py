@@ -6,11 +6,14 @@ import pandas as pd
 from sklearn.pipeline import Pipeline
 
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge
+from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-from sklearn.feature_selection import SelectKBest, mutual_info_regression
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import mutual_info_regression
 
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import ShuffleSplit
@@ -18,8 +21,6 @@ from sklearn.model_selection import GridSearchCV
 
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import make_scorer
-
-from sklearn.externals import joblib
 
 from trips_count_predictor.config.config import model_pickles_path
 
@@ -56,6 +57,8 @@ class TimeSeriesTrainer:
 		self.pipeline = None
 		self.best_regressor = None
 		self.best_params = {}
+		self.coefs = pd.Series()
+		self.cv_results = pd.DataFrame()
 
 	def get_scaler(self):
 		if self.scaler_type == "std":
@@ -74,6 +77,10 @@ class TimeSeriesTrainer:
 
 		if self.regr_type == "lr":
 			self.regr = LinearRegression()
+		elif self.regr_type == "ridge":
+			self.regr = Ridge()
+		elif self.regr_type == "svr":
+			self.regr = SVR()
 		elif self.regr_type == "rf":
 			self.regr = RandomForestRegressor()
 
@@ -101,11 +108,23 @@ class TimeSeriesTrainer:
 				"normalize": [True, False],
 				"fit_intercept": [True, False]
 			}
+		elif self.regr_type == "ridge":
+			self.hyperparams_grid = {
+				"n_jobs": [-1],
+				"normalize": [True, False],
+				"fit_intercept": [True, False],
+				"alpha": [0.001, 0.01, 0.1, 1, 10]
+			}
+		elif self.regr_type == "svr":
+			self.hyperparams_grid = {
+				"kernel": ["linear", "poly", "rbf"],
+				"C": [0.1, 1, 10, 100, 1000]
+			}
 		elif self.regr_type == "rf":
 			self.hyperparams_grid = {
 				"n_jobs": [-1],
 				"random_state": [1],
-				"n_estimators": [70, 85, 100, 120],
+				"n_estimators": [40, 60, 80, 100, 120],
 			}
 
 		new_grid = {}
@@ -125,12 +144,13 @@ class TimeSeriesTrainer:
 
 	def get_feature_importances(self):
 
-		if self.regr_type == 'lr':
+		if self.regr_type in ['lr', 'ridge'] or\
+		(self.regr_type == "svr" and self.best_params["regressor__kernel"] == "linear"):
 			self.coefs = pd.Series(
 				self.pipeline.named_steps["regressor"].coef_,
 				index=self.X.columns
 			)
-		elif self.regr_type == 'rf':
+		elif self.regr_type in ['rf']:
 			self.coefs = pd.Series(
 				self.pipeline.named_steps["regressor"].feature_importances_.tolist(),
 				index=self.X.columns
@@ -169,15 +189,3 @@ class TimeSeriesTrainer:
 
 		self.pipeline.fit(self.X, self.y)
 		self.get_feature_importances()
-
-
-	def save_final_estimator (self):
-		model_conf_string = "_".join([str(v) for v in self.config.values()])
-		out_pickle_filename = os.path.join(
-			model_pickles_path,
-			model_conf_string
-		)
-		joblib.dump(
-			self.pipeline._final_estimator,
-			filename=out_pickle_filename
-		)

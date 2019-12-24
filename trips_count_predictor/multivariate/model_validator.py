@@ -135,11 +135,11 @@ class ModelValidator:
 			self.y_hat_test.loc[self.y_hat_test < 0] = 0
 			self.cv_results = pd.concat(
 				[self.cv_results, pd.DataFrame(trainer.cv_results)],
-				ignore_index=True
+				ignore_index=True, sort=False
 			)
 			self.df_coef = pd.concat(
 				[self.df_coef, pd.DataFrame(trainer.coefs).T],
-				ignore_index=True
+				ignore_index=True, sort=False
 			)
 			split_seq_n_index += [self.y.iloc[test_index].index[0]]
 
@@ -202,7 +202,7 @@ class ModelValidator:
 		pd.DataFrame(self.best_params).to_csv(
 			os.path.join(
 				self.output_path,
-				"best_params.csv"
+				"best_hyperparams.csv"
 			)
 		)
 		self.cv_results.to_csv(

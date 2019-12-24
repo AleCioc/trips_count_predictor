@@ -1,7 +1,4 @@
-import os
-
 import pandas as pd
-from sklearn.externals import joblib
 
 from trips_count_predictor.multivariate.errors import mean_absolute_error
 from trips_count_predictor.multivariate.errors import rmse
