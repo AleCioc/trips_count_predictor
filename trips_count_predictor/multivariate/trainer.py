@@ -117,12 +117,12 @@ class TimeSeriesTrainer:
 			self.hyperparams_grid = {
 				"gamma": ["scale"],
 				"kernel": ["linear", "poly", "rbf"],
-				"C": [0.1, 1, 10, 100, 1000]
+				"C": [100]
 			}
 		elif self.regr_type == "rf":
 			self.hyperparams_grid = {
 				"random_state": [1],
-				"n_estimators": [40, 60, 80, 100, 120],
+				"n_estimators": [60, 80, 100],
 			}
 
 		new_grid = {}

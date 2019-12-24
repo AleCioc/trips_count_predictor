@@ -1,5 +1,7 @@
-import json
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
+import json
 import pandas as pd
 
 from trips_count_predictor.multivariate.model_validator import run_model_validator
