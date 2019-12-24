@@ -104,13 +104,11 @@ class TimeSeriesTrainer:
 
 		if self.regr_type == "lr":
 			self.hyperparams_grid = {
-				"n_jobs": [-1],
 				"normalize": [True, False],
 				"fit_intercept": [True, False]
 			}
 		elif self.regr_type == "ridge":
 			self.hyperparams_grid = {
-				"n_jobs": [-1],
 				"normalize": [True, False],
 				"fit_intercept": [True, False],
 				"alpha": [0.001, 0.01, 0.1, 1, 10]
@@ -122,7 +120,6 @@ class TimeSeriesTrainer:
 			}
 		elif self.regr_type == "rf":
 			self.hyperparams_grid = {
-				"n_jobs": [-1],
 				"random_state": [1],
 				"n_estimators": [40, 60, 80, 100, 120],
 			}
