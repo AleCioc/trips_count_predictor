@@ -20,7 +20,7 @@ hyperparams_grids = {
 		"C": [1, 10, 100, 1000]
 	},
 	"svr": {
-		"kernel": ["poly", "rbf"],
+		"kernel": ["rbf"],
 		"gamma": ["scale"],
 		"C": [1, 10, 100, 1000]
 	},
