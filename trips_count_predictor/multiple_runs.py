@@ -25,31 +25,31 @@ for month in range(5, 9):
 	])
 
 if len(sys.argv) > 1:
-
 	if sys.argv[1] == "cluster":
 		config_grid = ConfigGrid(multiple_runs_cluster_config)
 	else:
 		config_grid = ConfigGrid(multiple_runs_default_config)
 
-validators_input_dicts_tuples = []
+validators_input_dicts_list = []
 for i in range(len(config_grid.conf_list)):
-	validators_input_dicts_tuples.append({
+	validators_input_dicts_list.append({
 		"trips_count": trips_count,
 		"trainer_single_run_config": config_grid.conf_list[i]
 	})
 
-import threading
-threading.current_thread().name == 'MainThread'
-with parallel_backend('multiprocessing'):
+if len(validators_input_dicts_list) < 5:
+	validator_output_list = []
+	for input_dict in validators_input_dicts_list:
+		validator_output_list += [run_model_validator(input_dict)]
+else:
 	with mp.Pool(n_cores_remote) as pool:
 		validators_output_list = pool.map(
 			run_model_validator,
-			validators_input_dicts_tuples
+			validators_input_dicts_list
 		)
 
-if len(sys.argv) == 2:
+if len(sys.argv) > 1:
 	if sys.argv[1] == "cluster":
 		pd.DataFrame(validators_output_list).to_csv(cluster_results_path)
-else:
-	pd.DataFrame(validators_output_list).to_csv(default_results_path)
-
+	else:
+		pd.DataFrame(validators_output_list).to_csv(default_results_path)
