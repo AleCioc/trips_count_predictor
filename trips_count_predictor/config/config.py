@@ -35,6 +35,16 @@ trainer_single_run_default_config_path = os.path.join(
 	"default_config.json"
 )
 
+trainer_multiple_runs_configs_path = os.path.join(
+	root_config_path,
+	"trainer_multiple_runs_configs"
+)
+
+trainer_multiple_runs_default_config_path = os.path.join(
+	trainer_multiple_runs_configs_path,
+	"default_config.json"
+)
+
 model_pickles_path = os.path.join(
 	root_data_path,
 	"model_pickles"
@@ -55,12 +65,7 @@ single_run_results_path = os.path.join(
 	"single_run"
 )
 
-default_results_path = os.path.join(
-		root_results_path,
-		"multiple_runs_default_config_results.csv"
-	)
-
-cluster_results_path = os.path.join(
-		root_results_path,
-		"multiple_runs_cluster_config_results.csv"
-	)
+multiple_runs_results_path = os.path.join(
+	root_results_path,
+	"multiple_runs"
+)

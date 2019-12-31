@@ -1,9 +1,9 @@
 hyperparams_grids = {
-	"lr":{
+	"lr": {
 		"normalize": [True, False],
 		"fit_intercept": [True, False]
 	},
-	"ridge":{
+	"ridge": {
 		"normalize": [True, False],
 		"fit_intercept": [True, False],
 		"alpha": [0.01, 0.1, 1]

@@ -20,15 +20,13 @@ from sklearn.decomposition import PCA
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import mutual_info_regression
 
-from sklearn.model_selection import cross_validate
-from sklearn.model_selection import ShuffleSplit
 from sklearn.model_selection import GridSearchCV
 
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import make_scorer
 
-from trips_count_predictor.config.config import model_pickles_path
 from trips_count_predictor.multivariate.hyperparams_grids import hyperparams_grids
+
 
 class TimeSeriesTrainer:
 

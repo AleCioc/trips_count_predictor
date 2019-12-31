@@ -1,6 +1,4 @@
 import warnings
-warnings.simplefilter(action='ignore')
-
 import json
 import pandas as pd
 
@@ -10,6 +8,9 @@ from trips_count_predictor.city_loader.city_loader import CityLoader
 
 from trips_count_predictor.config.config import trainer_single_run_default_config_path
 
+
+warnings.simplefilter(action='ignore')
+
 loader = CityLoader("Minneapolis")
 trips_count = pd.Series(name="count")
 for month in range(5, 9):
@@ -17,7 +18,6 @@ for month in range(5, 9):
 		trips_count,
 		loader.load_resampled_trips_data("city_of_minneapolis", 2019, month, '1h')
 	])
-
 trips_count = trips_count.sort_index()
 
 #Get arguments of training ex. depth of past window
