@@ -3,7 +3,7 @@
 	"depth": [1, 8, 24, 48, 72, 168],
 	"training_policy": ["sliding", "expanding"],
 	"training_size": [24, 48, 72, 168, 336, 504],
-	"training_update_t": [1, 24, 168],
+	"training_update_t": [24],
 	"scaler_type": ["minmax"],
 	"regr_type": ["lr"],
 	"dim_red_type": [""],

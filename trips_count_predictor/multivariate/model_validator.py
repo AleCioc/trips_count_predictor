@@ -151,15 +151,6 @@ class ModelValidator:
 		)
 
 		self.validation_time = (datetime.datetime.now()-start_time).total_seconds()
-
-#        self.df_coef = pd.DataFrame(
-#                 self.df_coef.values,
-#                 index=split_seq_n_index,
-#                 columns=self.df_coef.columns
-#         )
-
-		# self.last_coefs = trainer.coefs
-		# self.last_predictor = predictor
 		self.output = self.get_output()
 		self.save_output()
 
