@@ -32,7 +32,7 @@ trainer_single_run_configs_path = os.path.join(
 
 trainer_single_run_default_config_path = os.path.join(
 	trainer_single_run_configs_path,
-	"default_config.json"
+	"default.json"
 )
 
 trainer_multiple_runs_configs_path = os.path.join(
@@ -42,7 +42,7 @@ trainer_multiple_runs_configs_path = os.path.join(
 
 trainer_multiple_runs_default_config_path = os.path.join(
 	trainer_multiple_runs_configs_path,
-	"default_config.json"
+	"default.json"
 )
 
 model_pickles_path = os.path.join(
