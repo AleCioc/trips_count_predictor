@@ -1,8 +1,8 @@
 {
-	"start": [1],
-	"depth": [24, 48, 168],
+	"start": [1, 4, 8, 12, 24],
+	"depth": [1, 8, 24, 48, 72, 168],
 	"training_policy": ["sliding"],
-	"training_size": [336, 504, 672],
+	"training_size": [168, 336, 504, 672, 840],
 	"training_update_t": [24],
 	"scaler_type": ["minmax"],
 	"regr_type": ["rf"],
