@@ -70,7 +70,6 @@ class TimeSeriesTrainer:
 			self.scaler = MinMaxScaler()
 
 	def get_regressor(self):
-
 		if self.regr_type == "lr":
 			self.regr = LinearRegression()
 		elif self.regr_type == "ridge":

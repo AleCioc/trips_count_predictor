@@ -100,7 +100,7 @@ class ModelValidator:
 				if len(train_index) < self.training_size:
 					continue
 
-			if self.dim_red_type == "autocorr":
+			if self.dim_red_type == "crosscorr":
 				self.X_train = filter_df_features(
 						self.y.iloc[train_index].copy(),
 						self.X.iloc[train_index].copy(),
