@@ -21,7 +21,7 @@ def create_df_features(trips_count, trainer_config):
 		df_features["weekday"] = [int(date_column[i].strftime("%w")) for i in range(len(date_column))]
 		df_features["hour"] = [int(date_column[i].strftime("%H")) for i in range(len(date_column))]
 		df_features["weekend"] = df_features["weekday"]
-		df_features["weekend"] = df_features["weekend"].replace([1,2,3,4,5], 1)
+		df_features["weekend"] = df_features["weekend"].replace([1, 2, 3, 4, 5], 1)
 		df_features["weekend"] = df_features["weekend"].replace([0, 6], 2)
 		df_features["weekend"] = df_features["weekend"]
 
@@ -44,9 +44,9 @@ def create_df_features(trips_count, trainer_config):
 	return df_features
 
 
-def filter_df_features(trips_count, df_features, threshold):
+def filter_df_features(trips_count, df_features, n_features):
 	y = trips_count[df_features.index]
 	crosscorr = df_features.astype(float).apply(lambda x: x.corr(y))
-	correlated_cols = crosscorr[abs(crosscorr) > threshold].index
+	correlated_cols = crosscorr.abs().sort_values().tail(n_features).index
 	df_features_filtered = df_features[correlated_cols]
 	return df_features_filtered
