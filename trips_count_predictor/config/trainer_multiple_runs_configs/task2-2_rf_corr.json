@@ -7,7 +7,7 @@
 	"scaler_type": ["minmax"],
 	"regr_type": ["rf"],
 	"dim_red_type": ["crosscorr"],
-	"dim_red_param": [5, 6, 7, 8, 9],
+	"dim_red_param": [3, 10, 20, 50, 100],
 	"use_weather": [1],
 	"use_y": [1],
 	"use_calendar": [1]
