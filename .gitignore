@@ -4,7 +4,7 @@ trips_count_predictor/data/*
 trips_count_predictor/results/*
 trips_count_predictor/figures/*
 
-trips_count_predictor/scratch.py
+scratch.py
 trips_count_predictor/config/trainer_single_run/scratch.json
 trips_count_predictor/config/trainer_multiple_runs/scratch.json
 
