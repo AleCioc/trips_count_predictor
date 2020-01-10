@@ -27,7 +27,7 @@ root_config_path = os.path.join(
 
 trainer_single_run_configs_path = os.path.join(
 	root_config_path,
-	"trainer_single_run_configs"
+	"trainer_single_run"
 )
 
 trainer_single_run_default_config_path = os.path.join(
@@ -37,7 +37,7 @@ trainer_single_run_default_config_path = os.path.join(
 
 trainer_multiple_runs_configs_path = os.path.join(
 	root_config_path,
-	"trainer_multiple_runs_configs"
+	"trainer_multiple_runs"
 )
 
 trainer_multiple_runs_default_config_path = os.path.join(
