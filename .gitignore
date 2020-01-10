@@ -4,6 +4,8 @@ trips_count_predictor/data/*
 trips_count_predictor/results/*
 trips_count_predictor/figures/*
 
+scratch*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

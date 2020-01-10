@@ -1,14 +1,14 @@
 {
 
 	"start": 1,
-	"depth": 1,
+	"depth": 8,
 	"training_policy": "sliding",
 	"training_size": 168,
     "training_update_t": 24,
-    "scaler_type": "",
-	"regr_type": "svr",
-	"dim_red_type": "",
-	"dim_red_param": 0,
+    "scaler_type": "minmax",
+	"regr_type": "rf",
+	"dim_red_type": "crosscorr",
+	"dim_red_param": 5,
 	"use_weather": 1,
 	"use_y": 1,
 	"use_calendar": 1
