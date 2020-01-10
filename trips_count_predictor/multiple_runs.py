@@ -5,7 +5,6 @@ import sys
 import multiprocessing as mp
 
 import pandas as pd
-from sklearn.utils import parallel_backend
 
 from trips_count_predictor.multivariate.model_validator import run_model_validator
 from trips_count_predictor.city_loader.city_loader import CityLoader

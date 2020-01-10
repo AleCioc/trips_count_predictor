@@ -42,11 +42,3 @@ def create_df_features(trips_count, trainer_config):
 		).dropna()
 
 	return df_features
-
-
-def filter_df_features(trips_count, df_features, n_features):
-	y = trips_count[df_features.index]
-	crosscorr = df_features.astype(float).apply(lambda x: x.corr(y))
-	correlated_cols = crosscorr.abs().sort_values().tail(n_features).index
-	df_features_filtered = df_features[correlated_cols]
-	return df_features_filtered

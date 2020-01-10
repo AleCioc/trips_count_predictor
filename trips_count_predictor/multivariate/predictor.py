@@ -24,14 +24,14 @@ class TimeSeriesPredictor():
         self.start = trainer_config["start"]
         self.depth = trainer_config["depth"]
 
-        self.X_test = self.X_test.astype(float).dropna()
+        self.X_test = self.X_test.loc[:, trainer.chosen_features].astype(float).dropna()
         self.y_test = self.y_test.astype(float).dropna()
         self.y_hat_test = pd.Series()
         self.results_dict = {}
 
     def predict(self):
         self.y_hat_test = pd.Series(
-            self.trainer.search.predict(self.X_test),
+            self.trainer.pipeline.predict(self.X_test),
             index=self.X_test.index
         )
 

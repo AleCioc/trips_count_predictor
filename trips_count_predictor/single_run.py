@@ -1,12 +1,13 @@
 import warnings
+import os
 import json
+import sys
+
 import pandas as pd
 
 from trips_count_predictor.multivariate.model_validator import run_model_validator
-
 from trips_count_predictor.city_loader.city_loader import CityLoader
-
-from trips_count_predictor.config.config import trainer_single_run_default_config_path
+from trips_count_predictor.config.config import trainer_single_run_configs_path
 
 
 warnings.simplefilter(action='ignore')
@@ -20,8 +21,13 @@ for month in range(5, 9):
 	])
 trips_count = trips_count.sort_index()
 
+config_path = os.path.join(
+	trainer_single_run_configs_path,
+	sys.argv[1]
+)
+
 #Get arguments of training ex. depth of past window
-with open(trainer_single_run_default_config_path, 'r') as f:
+with open(config_path, 'r') as f:
 	trainer_single_run_config = json.load(f)
 
 validators_input_dict = {
@@ -29,4 +35,4 @@ validators_input_dict = {
 	"trainer_single_run_config": trainer_single_run_config
 }
 
-validator_output = run_model_validator(validators_input_dict)
+validator_summary = run_model_validator(validators_input_dict)

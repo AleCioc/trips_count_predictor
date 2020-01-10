@@ -26,6 +26,7 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import make_scorer
 
 from trips_count_predictor.multivariate.hyperparams_grids import hyperparams_grids
+from trips_count_predictor.multivariate.best_hyperparams import best_hyperparams
 
 
 class TimeSeriesTrainer:
@@ -49,6 +50,8 @@ class TimeSeriesTrainer:
 		self.dim_red_type = trainer_config["dim_red_type"]
 		self.dim_red_param = trainer_config["dim_red_param"]
 		self.dim_reduction = None
+		self.chosen_features = self.X.columns
+		self.dim_red_scores = pd.DataFrame(index=self.X.columns)
 
 		self.scaler = None
 		self.scorers = None
@@ -59,8 +62,8 @@ class TimeSeriesTrainer:
 		self.steps = []
 		self.pipeline = None
 		self.best_regressor = None
-		self.best_params = {}
-		self.coefs = pd.Series()
+		self.best_hyperparams = {}
+		self.regression_coefs = pd.Series()
 		self.cv_results = pd.DataFrame()
 
 	def get_scaler(self):
@@ -86,14 +89,26 @@ class TimeSeriesTrainer:
 			self.regr = RandomForestRegressor()
 
 	def get_dim_reduction(self):
-		if self.dim_red_type == "mutinf":
+
+		if self.dim_red_param > len(self.X.columns):
+			self.dim_red_param = len(self.X.columns)
+
+		def crosscorr(X, y):
+			return pd.DataFrame(X).apply(lambda x: x.corr(pd.Series(y))).values
+
+		if self.dim_red_type == "crosscorr":
+			self.dim_reduction = SelectKBest(
+				crosscorr,
+				self.dim_red_param
+			)
+		elif self.dim_red_type == "mutinf":
 			self.dim_reduction = SelectKBest(
 				mutual_info_regression,
 				self.dim_red_param
 			)
 		elif self.dim_red_type == "pca":
 			self.dim_reduction = PCA(
-				n_components=int(self.dim_red_param * len(self.X.columns))
+				n_components=self.dim_red_param
 			)
 
 	def get_scorers(self):
@@ -120,23 +135,28 @@ class TimeSeriesTrainer:
 
 	def get_feature_importances(self):
 
+		if self.dim_red_type in ["crosscorr", "mutinf"]:
+			self.chosen_features = self.X.loc[:, self.dim_reduction.get_support()].columns
+			self.dim_red_scores = pd.Series(self.dim_reduction.scores_, index=self.X.columns)
+
 		if self.regr_type in ['lr', 'ridge', 'omp', 'brr', 'lsvr']:
-			self.coefs = pd.Series(
+			self.regression_coefs = pd.Series(
 				self.pipeline.named_steps["regressor"].coef_,
-				index=self.X.columns
+				index=self.chosen_features
 			)
 		elif self.regr_type in ['rf']:
-			self.coefs = pd.Series(
+			self.regression_coefs = pd.Series(
 				self.pipeline.named_steps["regressor"].feature_importances_.tolist(),
-				index=self.X.columns
+				index=self.chosen_features
 			)
 
 	def get_best_params_regressor(self, best_params):
 
-		new_best_params = {}
-		for k in best_params.keys():
-			new_best_params[k.split("__")[1]] = self.hyperparams_grid[k]
-		best_params = new_best_params
+		if self.config["hyperparams_tuning"]:
+			new_best_params = {}
+			for k in best_params.keys():
+				new_best_params[k.split("__")[1]] = self.hyperparams_grid[k]
+			best_params = new_best_params
 
 		if self.regr_type == "lr":
 			return LinearRegression(**best_params)
@@ -154,13 +174,18 @@ class TimeSeriesTrainer:
 		self.steps.append(("regressor", self.regr))
 		self.pipeline = Pipeline(self.steps)
 
-		self.get_hyperparams_grid()
-		self.get_hyperparams_grid_search()
-		self.search.fit(self.X, self.y)
-		self.cv_results = self.search.cv_results_
-		self.best_regressor = self.get_best_params_regressor(self.search.best_params_)
+		if self.config["hyperparams_tuning"]:
+			self.get_hyperparams_grid()
+			self.get_hyperparams_grid_search()
+			self.search.fit(self.X, self.y)
+			self.cv_results = self.search.cv_results_
+			self.best_hyperparams = self.search.best_params_
+			self.best_regressor = self.get_best_params_regressor(self.best_hyperparams)
+		else:
+			self.best_hyperparams = best_hyperparams[self.config["regr_type"]]
+			self.best_regressor = self.get_best_params_regressor(self.best_hyperparams)
+
 		self.pipeline.named_steps["regressor"] = self.best_regressor
-		self.best_params = self.search.best_params_
 
 		self.pipeline.fit(self.X, self.y)
 		self.get_feature_importances()
