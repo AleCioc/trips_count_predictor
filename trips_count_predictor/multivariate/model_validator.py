@@ -41,7 +41,6 @@ class ModelValidator:
 
 		self.trips_count = trips_count
 		self.trainer_config = trainer_config
-		print(self.trainer_config)
 
 		self.start = trainer_config["start"]
 		self.depth = trainer_config["depth"]
@@ -164,6 +163,8 @@ class ModelValidator:
 				self.feature_coefs_model
 		)
 		self.regression_plotter.plot_charts()
+
+		print(self.trainer_config)
 
 	def get_summary(self):
 
