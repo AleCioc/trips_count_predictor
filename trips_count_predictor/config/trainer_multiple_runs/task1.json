@@ -12,7 +12,7 @@
 	"dim_red_param": [0],
 
 	"use_weather": [1],
-	"use_y": [0, 1],
+	"use_y": [1],
 	"use_calendar": [1]
 }
 
