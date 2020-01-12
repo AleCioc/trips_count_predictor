@@ -41,6 +41,7 @@ class ModelValidator:
 
 		self.trips_count = trips_count
 		self.trainer_config = trainer_config
+		print(self.trainer_config)
 
 		self.start = trainer_config["start"]
 		self.depth = trainer_config["depth"]
