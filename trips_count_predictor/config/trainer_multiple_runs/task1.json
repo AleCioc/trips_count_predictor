@@ -5,7 +5,7 @@
 	"training_size": [168, 336, 504, 672],
 	"training_update_t": [24],
 
-	"regr_type": ["lr", "lsvr", "rf"],
+	"regr_type": ["lr", "lsvr"],
     "hyperparams_tuning": [1],
 	"scaler_type": ["minmax"],
 	"dim_red_type": [""],
