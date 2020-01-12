@@ -108,11 +108,11 @@ class ModelValidator:
 			if len(train_index) < self.training_size:
 				continue
 
-			self.X_train = self.X.iloc[train_index].copy()
-			self.X_test = self.X.iloc[test_index].copy()
+			X_train = self.X.iloc[train_index].copy()
+			X_test = self.X.iloc[test_index].copy()
 
 			trainer = TimeSeriesTrainer(
-				self.X_train,
+				X_train,
 				self.y.iloc[train_index],
 				self.trainer_config
 			)
@@ -120,13 +120,14 @@ class ModelValidator:
 			self.best_hyperparams += [trainer.best_hyperparams]
 
 			predictor = TimeSeriesPredictor(
-				self.X_test,
+				X_test,
 				self.y.iloc[test_index],
 				self.trainer_config,
 				trainer
 			)
 			predictor.predict()
 
+			self.X_test = pd.concat([self.X_test, predictor.X_test])
 			self.y_test = pd.concat([self.y_test, predictor.y_test])
 			self.y_hat_test = pd.concat([self.y_hat_test, predictor.y_hat_test])
 			self.y_hat_test.loc[self.y_hat_test < 0] = 0
@@ -146,7 +147,7 @@ class ModelValidator:
 
 		print(
 			self.trainer_config["regr_type"],
-			"validator exec time:",
+			self.X_test.shape,
 			(datetime.datetime.now()-start_time).total_seconds()
 		)
 
