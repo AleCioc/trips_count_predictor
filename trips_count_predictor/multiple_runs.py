@@ -2,6 +2,7 @@ import warnings
 import os
 import json
 import sys
+import datetime
 import multiprocessing as mp
 
 import pandas as pd
@@ -41,6 +42,7 @@ for i in range(len(config_grid.conf_list)):
 		"trainer_single_run_config": config_grid.conf_list[i]
 	})
 
+start = datetime.datetime.now()
 with mp.Pool(n_cores_remote) as pool:
 	validators_output_list = pool.map(
 		run_model_validator,
@@ -52,3 +54,6 @@ output_path = os.path.join(
 	sys.argv[1].split(".")[0] + ".csv"
 )
 pd.DataFrame(validators_output_list).to_csv(output_path)
+end = datetime.datetime.now()
+
+print("Duration: ", (end-start).total_seconds())
