@@ -105,9 +105,8 @@ class ModelValidator:
 
 		for train_index, test_index in tscv.split(self.X):
 
-			if self.training_policy == "sliding":
-				if len(train_index) < self.training_size:
-					continue
+			if len(train_index) < self.training_size:
+				continue
 
 			self.X_train = self.X.iloc[train_index].copy()
 			self.X_test = self.X.iloc[test_index].copy()

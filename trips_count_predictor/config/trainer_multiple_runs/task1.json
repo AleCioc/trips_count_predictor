@@ -1,15 +1,15 @@
 {
-	"start": [1],
-	"depth": [1, 2, 3, 4, 5],
-	"training_policy": ["sliding"],
-	"training_size": [168],
-	"training_update_t": [24],
+	"start": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	"depth": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	"training_policy": ["sliding", "expanding"],
+	"training_size": [24, 48, 72, 96, 120, 144, 168],
+	"training_update_t": [1, 24],
 	"scaler_type": ["std", "minmax"],
 	"regr_type": ["lr", "svr", "lsvr", "rf"],
 	"dim_red_type": [""],
 	"dim_red_param": [0],
-	"use_weather": [1],
-	"use_y": [1],
+	"use_weather": [0, 1],
+	"use_y": [0, 1],
 	"use_calendar": [1]
 }
 
