@@ -41,4 +41,4 @@ def create_df_features(trips_count, trainer_config):
 			axis=1, sort=False
 		).dropna()
 
-	return df_features
+	return df_features.dropna()
