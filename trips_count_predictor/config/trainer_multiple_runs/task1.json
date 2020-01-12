@@ -1,11 +1,11 @@
 {
-	"start": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-	"depth": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	"start": [1, 2, 3, 4],
+	"depth": [1, 2, 3, 4],
 	"training_policy": ["sliding", "expanding"],
-	"training_size": [24, 48, 72, 96, 120, 144, 168],
-	"training_update_t": [1, 24],
+	"training_size": [168, 336, 504, 672],
+	"training_update_t": [24],
 
-	"regr_type": ["lr", "svr", "lsvr", "rf"],
+	"regr_type": ["lr", "lsvr", "rf"],
     "hyperparams_tuning": [1],
 	"scaler_type": ["std", "minmax"],
 	"dim_red_type": [""],

@@ -17,12 +17,14 @@ hyperparams_grids = {
 		"fit_intercept": [True, False],
 	},
 	"lsvr": {
-		"C": [1, 10, 100, 1000]
+		"C": [1, 10, 100, 1000],
+		"max_iter": [1200]
 	},
 	"svr": {
 		"kernel": ["rbf"],
 		"gamma": ["scale"],
-		"C": [1, 10, 100, 1000]
+		"C": [1, 10, 100, 1000],
+		"max_iter": [1200]
 	},
 	"rf": {
 		"random_state": [1],

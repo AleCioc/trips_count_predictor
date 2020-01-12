@@ -189,3 +189,4 @@ class TimeSeriesTrainer:
 
 		self.pipeline.fit(self.X, self.y)
 		self.get_feature_importances()
+		self.pipeline.fit(self.X.loc[:, self.chosen_features], self.y)
