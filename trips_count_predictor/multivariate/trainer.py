@@ -38,8 +38,8 @@ class TimeSeriesTrainer:
 			trainer_config
 	):
 
-		self.X = X_train.dropna()
-		self.y = y_train.dropna()
+		self.X = X_train
+		self.y = y_train
 
 		self.config = trainer_config
 
