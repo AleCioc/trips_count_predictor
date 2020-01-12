@@ -11,7 +11,7 @@
 	"training_update_t": [24],
 
 	"regr_type": ["lr", "rf", "lsvr", "svr"],
-    "hyperparams_tuning": [0, 1],
+    "hyperparams_tuning": [1],
 	"scaler_type": ["std", "minmax"],
 	"dim_red_type": [""],
 	"dim_red_param": [0]
