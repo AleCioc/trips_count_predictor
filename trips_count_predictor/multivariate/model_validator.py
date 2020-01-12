@@ -165,8 +165,6 @@ class ModelValidator:
 		)
 		self.regression_plotter.plot_charts()
 
-		print(self.trainer_config)
-
 	def get_summary(self):
 
 		summary_dict = self.trainer_config.copy()
