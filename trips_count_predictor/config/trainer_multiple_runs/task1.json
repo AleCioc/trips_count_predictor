@@ -4,12 +4,12 @@
 	"use_calendar": [1],
 
 	"start": [1],
-	"depth": [1],
+	"depth": [1, 2, 3, 4],
 	"training_policy": ["sliding", "expanding"],
 	"training_size": [672],
 	"training_update_t": [24],
 
-	"regr_type": ["lr", "rf", "lsvr", "svr"],
+	"regr_type": ["lr", "rf", "lsvr"],
     "hyperparams_tuning": [1],
 	"scaler_type": ["std", "minmax"],
 	"dim_red_type": [""],

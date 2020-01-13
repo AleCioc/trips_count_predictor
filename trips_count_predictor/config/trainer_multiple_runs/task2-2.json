@@ -1,6 +1,6 @@
 {
-	"use_weather": [1],
-	"use_y": [1],
+	"use_weather": [0, 1],
+	"use_y": [0, 1],
 	"use_calendar": [1],
 
 	"start": [1],
@@ -10,8 +10,8 @@
 	"training_update_t": [24],
 
   	"regr_type": ["lr", "rf"],
-    "hyperparams_tuning": [1],
+    "hyperparams_tuning": [0],
 	"scaler_type": ["minmax"],
-	"dim_red_type": ["mutinf", "crosscorr"],
-	"dim_red_param": [5, 10, 15, 20]
+	"dim_red_type": ["crosscorr"],
+	"dim_red_param": [1, 2, 3, 4, 5]
 }
