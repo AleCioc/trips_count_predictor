@@ -1,14 +1,17 @@
 {
+	"use_weather": [1],
+	"use_y": [1],
+	"use_calendar": [1],
+
 	"start": [1],
 	"depth": [168, 336, 504, 672],
 	"training_policy": ["sliding"],
 	"training_size": [672],
 	"training_update_t": [24],
+
+  	"regr_type": ["lr", "rf"],
+    "hyperparams_tuning": [1],
 	"scaler_type": ["minmax"],
-	"regr_type": ["rf"],
 	"dim_red_type": ["mutinf", "crosscorr"],
-	"dim_red_param": [5, 10, 15, 20],
-	"use_weather": [1],
-	"use_y": [1],
-	"use_calendar": [1]
+	"dim_red_param": [5, 10, 15, 20]
 }
