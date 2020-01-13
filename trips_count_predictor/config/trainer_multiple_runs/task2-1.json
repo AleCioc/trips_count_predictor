@@ -3,13 +3,13 @@
 	"use_y": [1],
 	"use_calendar": [1],
 
-	"start": [1, 2, 3, 4, 5, 6, 7, 8],
+	"start": [1],
 	"depth": [1],
 	"training_policy": ["sliding"],
-	"training_size": [24, 48, 72, 96, 120, 144, 168],
-	"training_update_t": [1, 24],
+	"training_size": [24, 48, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 312, 336],
+	"training_update_t": [1, 24, 168],
 
-	"regr_type": ["lr", "rf"],
+	"regr_type": ["rf"],
     "hyperparams_tuning": [0],
 	"scaler_type": ["minmax"],
 	"dim_red_type": [""],

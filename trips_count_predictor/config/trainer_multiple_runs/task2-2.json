@@ -9,7 +9,7 @@
 	"training_size": [672],
 	"training_update_t": [24],
 
-  	"regr_type": ["lr", "rf"],
+  	"regr_type": ["rf"],
     "hyperparams_tuning": [0],
 	"scaler_type": ["minmax"],
 	"dim_red_type": ["crosscorr"],
