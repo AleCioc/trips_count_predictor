@@ -2,6 +2,7 @@ import os
 import datetime
 
 import pandas as pd
+from statsmodels.tsa.arima_model import ARIMA as ARIMA_statsmodels
 
 from trips_count_predictor.utils.path_utils import check_create_path
 from trips_count_predictor.config.config import single_run_results_path
@@ -11,21 +12,27 @@ from trips_count_predictor.multivariate.errors import percentage_error
 from trips_count_predictor.multivariate.errors import r2_score
 
 
-class BaselineModel:
+class ARIMA:
 
 	def __init__(
 			self,
 			trips_count,
-			start
+			start,
+			depth,
+			arima_d,
+			arima_q
 	):
 
 		self.y_test = trips_count
 		self.start = start
+		self.depth = depth
+		self.arima_d = arima_d
+		self.arima_q = arima_q
 
 		self.y_hat_test = pd.Series()
 		self.summary = pd.Series()
 
-		model_conf_string = "baseline"
+		model_conf_string = "arima"
 		check_create_path(single_run_results_path)
 		self.output_path = os.path.join(
 			single_run_results_path,
@@ -33,21 +40,32 @@ class BaselineModel:
 		)
 		check_create_path(self.output_path)
 
+		self.validation_time = datetime.timedelta()
+
 	def run(self):
 
 		start_time = datetime.datetime.now()
-		self.y_hat_test = self.y_test.shift(self.start)
+		self.regr = ARIMA_statsmodels(self.y_test.astype(float), order=(self.depth, self.arima_d, self.arima_q))
+		self.regr_fit = self.regr.fit(disp=0, maxiter=400, method='css')
+		if self.start == 1:
+			self.y_hat_test = pd.Series(self.regr_fit.fittedvalues, index=self.y_test.index)
+		elif self.start > 1:
+			pass
+		self.y_hat_test.loc[self.y_hat_test < 0] = 0
 		self.validation_time = (datetime.datetime.now()-start_time).total_seconds()
 
 	def get_summary(self):
 		summary_dict = {
-			"regr_type": "baseline",
+			"regr_type": "arima",
 			"start": self.start,
+			"depth": self.depth,
+			"arima_d": self.arima_d,
+			"arima_q": self.arima_q,
 			"mae": mean_absolute_error(self.y_test, self.y_hat_test),
 			"rmse": rmse(self.y_test, self.y_hat_test),
 			"rel": percentage_error(self.y_test, self.y_hat_test),
 			"r2": r2_score(self.y_test, self.y_hat_test),
-			"validation_time":self.validation_time
+			"validation_time": self.validation_time
 		}
 		self.summary = pd.Series(summary_dict)
 		return self.summary

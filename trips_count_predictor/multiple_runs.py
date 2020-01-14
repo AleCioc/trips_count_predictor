@@ -8,6 +8,7 @@ import multiprocessing as mp
 import pandas as pd
 
 from trips_count_predictor.univariate.baseline import BaselineModel
+from trips_count_predictor.univariate.arima import ARIMA
 from trips_count_predictor.multivariate.model_validator import run_model_validator
 from trips_count_predictor.city_loader.city_loader import CityLoader
 from trips_count_predictor.config.config import n_cores_remote
@@ -43,23 +44,38 @@ for i in range(len(config_grid.conf_list)):
 		"trainer_single_run_config": config_grid.conf_list[i]
 	})
 
-start = datetime.datetime.now()
+start_time = datetime.datetime.now()
 with mp.Pool(n_cores_remote) as pool:
 	validators_output_list = pool.map(
 		run_model_validator,
 		validators_input_dicts_tuples
 	)
-for config in config_grid.conf_list:
-	baseline = BaselineModel(trips_count, config["start"], config["depth"])
+
+start_list = list(set([config["start"] for config in config_grid.conf_list]))
+depth_list = list(set([config["depth"] for config in config_grid.conf_list]))
+
+for start in start_list:
+	baseline = BaselineModel(trips_count, start)
 	baseline.run()
 	baseline.get_summary()
 	validators_output_list += [baseline.summary]
+
+for start in start_list:
+	for depth in depth_list:
+		try:
+			arima = ARIMA(trips_count, start, depth, 0, 2)
+			arima.run()
+			arima.get_summary()
+			validators_output_list += [arima.summary]
+		# not valid parameters for arima
+		except:
+			pass
 
 output_path = os.path.join(
 	multiple_runs_results_path,
 	sys.argv[1].split(".")[0] + ".csv"
 )
-pd.DataFrame(validators_output_list).to_csv(output_path)
-end = datetime.datetime.now()
+pd.DataFrame(validators_output_list).reset_index(drop=True).to_csv(output_path)
+end_time = datetime.datetime.now()
 
-print("Duration: ", (end-start).total_seconds())
+print("Duration: ", (end_time - start_time).total_seconds())

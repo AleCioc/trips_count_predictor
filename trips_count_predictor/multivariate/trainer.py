@@ -21,6 +21,7 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import mutual_info_regression
 
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import RandomizedSearchCV
 
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import make_scorer
@@ -139,7 +140,7 @@ class TimeSeriesTrainer:
 			self.chosen_features = self.X.loc[:, self.dim_reduction.get_support()].columns
 			self.dim_red_scores = pd.Series(self.dim_reduction.scores_, index=self.X.columns)
 
-		if self.regr_type in ['lr', 'ridge', 'omp', 'brr', 'lsvr']:
+		if self.regr_type in ['lr', 'lsvr']:
 			self.regression_coefs = pd.Series(
 				self.pipeline.named_steps["regressor"].coef_,
 				index=self.chosen_features
@@ -160,6 +161,8 @@ class TimeSeriesTrainer:
 
 		if self.regr_type == "lr":
 			return LinearRegression(**best_params)
+		elif self.regr_type == "lsvr":
+			return LinearSVR(**best_params)
 		elif self.regr_type == "rf":
 			return RandomForestRegressor(**best_params)
 
@@ -188,6 +191,7 @@ class TimeSeriesTrainer:
 			else:
 				self.best_regressor = self.regr
 				self.best_hyperparams = self.regr.get_params()
+
 		self.pipeline.named_steps["regressor"] = self.best_regressor
 
 		self.pipeline.fit(self.X, self.y)
