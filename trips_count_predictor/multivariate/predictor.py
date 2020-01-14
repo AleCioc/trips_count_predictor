@@ -27,7 +27,8 @@ class TimeSeriesPredictor():
 		self.X_test = self.X_test.loc[:, trainer.chosen_features].astype(float).dropna()
 		self.y_test = self.y_test.astype(float).dropna()
 		self.y_hat_test = pd.Series()
-		self.results_dict = {}
+
+		self.summary = pd.Series()
 
 	def predict(self):
 		self.y_hat_test = pd.Series(
@@ -36,16 +37,11 @@ class TimeSeriesPredictor():
 		)
 
 	def get_performance(self):
-		self.results_dict["mae"] = mean_absolute_error(
-			self.y_test, self.y_hat_test
-		)
-		self.results_dict["rmse"] = rmse(
-			self.y_test, self.y_hat_test
-		)
-		self.results_dict["rel"] = percentage_error(
-			self.y_test, self.y_hat_test
-		)
-		self.results_dict["r2"] = r2_score(
-			self.y_test, self.y_hat_test
-		)
-		return pd.Series(self.results_dict)
+		summary_dict = {
+			"mae": mean_absolute_error(self.y_test, self.y_hat_test),
+			"rmse": rmse(self.y_test, self.y_hat_test),
+			"rel": percentage_error(self.y_test, self.y_hat_test),
+			"r2": r2_score(self.y_test, self.y_hat_test)
+		}
+		self.summary = pd.Series(summary_dict)
+		return self.summary

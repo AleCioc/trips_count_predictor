@@ -7,6 +7,7 @@ import multiprocessing as mp
 
 import pandas as pd
 
+from trips_count_predictor.univariate.baseline import BaselineModel
 from trips_count_predictor.multivariate.model_validator import run_model_validator
 from trips_count_predictor.city_loader.city_loader import CityLoader
 from trips_count_predictor.config.config import n_cores_remote
@@ -48,6 +49,11 @@ with mp.Pool(n_cores_remote) as pool:
 		run_model_validator,
 		validators_input_dicts_tuples
 	)
+for config in config_grid.conf_list:
+	baseline = BaselineModel(trips_count, config["start"], config["depth"])
+	baseline.run()
+	baseline.get_summary()
+	validators_output_list += [baseline.summary]
 
 output_path = os.path.join(
 	multiple_runs_results_path,

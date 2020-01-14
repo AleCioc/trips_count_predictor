@@ -168,23 +168,16 @@ class ModelValidator:
 	def get_summary(self):
 
 		summary_dict = self.trainer_config.copy()
-
-		summary_dict["mae"] = mean_absolute_error(
-			self.y_test, self.y_hat_test
-		)
-		summary_dict["rmse"] = rmse(
-			self.y_test, self.y_hat_test
-		)
-		summary_dict["rel"] = percentage_error(
-			self.y_test, self.y_hat_test
-		)
-		summary_dict["r2"] = r2_score(
-			self.y_test, self.y_hat_test
-		)
+		summary_dict.update({
+			"mae": mean_absolute_error(self.y_test, self.y_hat_test),
+			"rmse": rmse(self.y_test, self.y_hat_test),
+			"rel": percentage_error(self.y_test, self.y_hat_test),
+			"r2": r2_score(self.y_test, self.y_hat_test)
+		})
+		self.summary = pd.Series(summary_dict)
 		if self.trainer_config["hyperparams_tuning"]:
 			summary_dict["mean_fit_time"] = self.cv_results.mean_fit_time.mean()
 		summary_dict["validation_time"] = self.validation_time
-
 		return pd.Series(summary_dict)
 
 	def save_output (self):

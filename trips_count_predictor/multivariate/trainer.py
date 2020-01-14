@@ -174,7 +174,7 @@ class TimeSeriesTrainer:
 		self.steps.append(("regressor", self.regr))
 		self.pipeline = Pipeline(self.steps)
 
-		if self.config["hyperparams_tuning"]:
+		if self.config["hyperparams_tuning"] == 1:
 			self.get_hyperparams_grid()
 			self.get_hyperparams_grid_search()
 			self.search.fit(self.X, self.y)
@@ -182,9 +182,12 @@ class TimeSeriesTrainer:
 			self.best_hyperparams = self.search.best_params_
 			self.best_regressor = self.get_best_params_regressor(self.best_hyperparams)
 		else:
-			self.best_hyperparams = best_hyperparams[self.config["regr_type"]]
-			self.best_regressor = self.get_best_params_regressor(self.best_hyperparams)
-
+			if self.config["hyperparams_tuning"] == "best" and self.regr_type in best_hyperparams:
+				self.best_hyperparams = best_hyperparams[self.config["regr_type"]]
+				self.best_regressor = self.get_best_params_regressor(self.best_hyperparams)
+			else:
+				self.best_regressor = self.regr
+				self.best_hyperparams = self.regr.get_params()
 		self.pipeline.named_steps["regressor"] = self.best_regressor
 
 		self.pipeline.fit(self.X, self.y)
