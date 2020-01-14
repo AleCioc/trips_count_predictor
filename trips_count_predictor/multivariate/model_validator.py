@@ -22,7 +22,6 @@ def run_model_validator (validators_input_dict):
 	trips_count = validators_input_dict["trips_count"]
 	trainer_single_run_config = validators_input_dict["trainer_single_run_config"]
 
-	#One-step validator
 	validator = ModelValidator(
 		trips_count,
 		trainer_single_run_config
@@ -88,8 +87,6 @@ class ModelValidator:
 
 	def run (self):
 
-		# Do a new model every len(x)/tot hours
-		# Max_train_size is sliding window size
 		if self.training_policy == "sliding":
 			tscv = TimeSeriesSplit(
 				n_splits = (len(self.X)-1)//self.training_update_t,
