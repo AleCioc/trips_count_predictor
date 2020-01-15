@@ -173,12 +173,13 @@ class TimeSeriesTrainer:
 		self.get_scaler()
 		self.get_dim_reduction()
 
-		self.steps.append(("scaler", self.scaler))
-		self.steps.append(("dim_reduction", self.dim_reduction))
-		self.steps.append(("regressor", self.regr))
-		self.pipeline = Pipeline(self.steps)
 
 		if self.config["hyperparams_tuning"] == 1:
+			if self.config["scaler_type"] != "":
+				self.steps.append(("scaler", self.scaler))
+			self.steps.append(("dim_reduction", self.dim_reduction))
+			self.steps.append(("regressor", self.regr))
+			self.pipeline = Pipeline(self.steps)
 			self.get_hyperparams_grid()
 			self.get_hyperparams_grid_search()
 			self.search.fit(self.X, self.y)
@@ -193,12 +194,18 @@ class TimeSeriesTrainer:
 				self.best_hyperparams = best_hyperparams[self.config["regr_type"]]
 				self.best_regressor = self.get_best_params_regressor()
 				self.steps = []
-				self.steps.append(("scaler", self.scaler))
+				if self.config["scaler_type"] != "":
+					self.steps.append(("scaler", self.scaler))
 				self.steps.append(("dim_reduction", self.dim_reduction))
 				self.steps.append(("regressor", self.best_regressor))
 				self.pipeline = Pipeline(self.steps)
 				self.pipeline.fit(self.X, self.y)
 			else:
+				if self.config["scaler_type"] != "":
+					self.steps.append(("scaler", self.scaler))
+				self.steps.append(("dim_reduction", self.dim_reduction))
+				self.steps.append(("regressor", self.regr))
+				self.pipeline = Pipeline(self.steps)
 				self.best_regressor = self.regr
 				self.best_hyperparams = self.regr.get_params()
 				self.pipeline.fit(self.X, self.y)
