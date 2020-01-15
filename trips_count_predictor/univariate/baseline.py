@@ -5,10 +5,13 @@ import pandas as pd
 
 from trips_count_predictor.utils.path_utils import check_create_path
 from trips_count_predictor.config.config import single_run_results_path
-from trips_count_predictor.multivariate.errors import mean_absolute_error
-from trips_count_predictor.multivariate.errors import rmse
-from trips_count_predictor.multivariate.errors import mean_relative_error
 from trips_count_predictor.multivariate.errors import r2_score
+from trips_count_predictor.multivariate.errors import rmse
+from trips_count_predictor.multivariate.errors import mean_absolute_error
+from trips_count_predictor.multivariate.errors import max_absolute_error
+from trips_count_predictor.multivariate.errors import mean_relative_error
+from trips_count_predictor.multivariate.errors import mean_absolute_percentage_error
+from trips_count_predictor.multivariate.errors import sym_mape
 
 
 class BaselineModel:
