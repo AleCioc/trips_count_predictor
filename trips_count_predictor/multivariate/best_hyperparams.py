@@ -5,6 +5,6 @@ best_hyperparams = {
 	},
 	"rf": {
 		"random_state": 1,
-		"n_estimators": 85,
+		"n_estimators": 75,
 	}
 }

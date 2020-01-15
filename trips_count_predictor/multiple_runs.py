@@ -51,15 +51,13 @@ with mp.Pool(n_cores_remote) as pool:
 		validators_input_dicts_tuples
 	)
 
+baseline = BaselineModel(trips_count, 168)
+baseline.run()
+baseline.get_summary()
+validators_output_list += [baseline.summary]
+
 start_list = list(set([config["start"] for config in config_grid.conf_list]))
 depth_list = list(set([config["depth"] for config in config_grid.conf_list]))
-
-for start in start_list:
-	baseline = BaselineModel(trips_count, start)
-	baseline.run()
-	baseline.get_summary()
-	validators_output_list += [baseline.summary]
-
 for start in start_list:
 	for depth in depth_list:
 		try:
