@@ -37,6 +37,9 @@ class TimeSeriesPredictor():
 		)
 
 	def get_performance(self):
+		y_test_err = self.y_test.loc[self.y_test > 0].iloc[24:-24]
+		y_hat_test_err = self.y_hat_test.loc[y_test_err.index]
+		errs = y_test_err - y_hat_test_err
 		summary_dict = {
 			"r2": r2_score(y_test_err, y_hat_test_err),
 			"rmse": rmse(y_test_err, y_hat_test_err),

@@ -5,8 +5,8 @@
 
 	"start": [1],
 	"depth": [1],
-	"training_policy": ["sliding"],
-	"training_size": [24, 48, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 312, 336],
+	"training_policy": ["expanding"],
+	"training_size": [336],
 	"training_update_t": [1, 24, 168],
 
 	"regr_type": ["rf"],

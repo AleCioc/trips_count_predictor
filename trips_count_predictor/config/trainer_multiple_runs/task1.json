@@ -5,7 +5,7 @@
 
 	"start": [1],
 	"depth": [1],
-	"training_policy": ["sliding", "expanding"],
+	"training_policy": ["expanding"],
 	"training_size": [168],
 	"training_update_t": [24],
 

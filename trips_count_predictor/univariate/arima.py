@@ -55,6 +55,9 @@ class ARIMA:
 		self.validation_time = (datetime.datetime.now()-start_time).total_seconds()
 
 	def get_summary(self):
+		y_test_err = self.y_test.loc[self.y_test > 0].iloc[24:-24]
+		y_hat_test_err = self.y_hat_test.loc[y_test_err.index]
+		errs = y_test_err - y_hat_test_err
 		summary_dict = {
 			"regr_type": "arima",
 			"start": self.start,
