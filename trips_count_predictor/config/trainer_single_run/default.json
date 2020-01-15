@@ -2,13 +2,16 @@
 
 	"start": 1,
 	"depth": 1,
-	"training_policy": "sliding",
+	"training_policy": "expanding",
 	"training_size": 672,
     "training_update_t": 24,
+
     "scaler_type": "minmax",
-	"regr_type": "rf",
+	"regr_type": "lr",
 	"dim_red_type": "",
 	"dim_red_param": 0,
+	"hyperparams_tuning": 1,
+
 	"use_weather": 0,
 	"use_y": 1,
 	"use_calendar": 1

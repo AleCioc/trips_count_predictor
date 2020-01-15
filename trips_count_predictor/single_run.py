@@ -26,7 +26,6 @@ config_path = os.path.join(
 	sys.argv[1]
 )
 
-#Get arguments of training ex. depth of past window
 with open(config_path, 'r') as f:
 	trainer_single_run_config = json.load(f)
 

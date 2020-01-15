@@ -38,6 +38,8 @@ class ModelValidator:
 		trainer_config
 	):
 
+		print(trainer_config)
+
 		self.trips_count = trips_count
 		self.trainer_config = trainer_config
 
@@ -172,7 +174,7 @@ class ModelValidator:
 			"r2": r2_score(self.y_test, self.y_hat_test)
 		})
 		self.summary = pd.Series(summary_dict)
-		if self.trainer_config["hyperparams_tuning"]:
+		if self.trainer_config["hyperparams_tuning"] != "best":
 			summary_dict["mean_fit_time"] = self.cv_results.mean_fit_time.mean()
 		summary_dict["validation_time"] = self.validation_time
 		return pd.Series(summary_dict)

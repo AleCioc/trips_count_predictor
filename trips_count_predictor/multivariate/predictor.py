@@ -32,7 +32,7 @@ class TimeSeriesPredictor():
 
 	def predict(self):
 		self.y_hat_test = pd.Series(
-			self.trainer.pipeline.predict(self.X_test),
+			self.trainer.final_estimator.predict(self.X_test),
 			index=self.X_test.index
 		)
 

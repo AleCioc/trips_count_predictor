@@ -1,7 +1,7 @@
 best_hyperparams = {
 	"lr": {
-		"normalize": False,
-		"fit_intercept": False
+		"normalize": True,
+		"fit_intercept": True
 	},
 	"rf": {
 		"random_state": 1,

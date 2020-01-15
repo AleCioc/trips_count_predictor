@@ -142,29 +142,30 @@ class TimeSeriesTrainer:
 
 		if self.regr_type in ['lr', 'lsvr']:
 			self.regression_coefs = pd.Series(
-				self.pipeline.named_steps["regressor"].coef_,
+				self.best_regressor.coef_,
 				index=self.chosen_features
 			)
 		elif self.regr_type in ['rf']:
 			self.regression_coefs = pd.Series(
-				self.pipeline.named_steps["regressor"].feature_importances_.tolist(),
+				self.best_regressor.feature_importances_.tolist(),
 				index=self.chosen_features
 			)
 
-	def get_best_params_regressor(self, best_params):
+	def get_best_params_regressor(self):
 
-		if self.config["hyperparams_tuning"]:
-			new_best_params = {}
-			for k in best_params.keys():
-				new_best_params[k.split("__")[1]] = self.hyperparams_grid[k]
-			best_params = new_best_params
+		if self.config["hyperparams_tuning"] != "best":
+			best_hyperparams = {}
+			for k in self.best_hyperparams.keys():
+				best_hyperparams[k.split("__")[1]] = self.best_hyperparams[k]
+		else:
+			best_hyperparams = self.best_hyperparams
 
 		if self.regr_type == "lr":
-			return LinearRegression(**best_params)
+			return LinearRegression(**best_hyperparams)
 		elif self.regr_type == "lsvr":
-			return LinearSVR(**best_params)
+			return LinearSVR(**best_hyperparams)
 		elif self.regr_type == "rf":
-			return RandomForestRegressor(**best_params)
+			return RandomForestRegressor(**best_hyperparams)
 
 	def run(self):
 
@@ -183,17 +184,24 @@ class TimeSeriesTrainer:
 			self.search.fit(self.X, self.y)
 			self.cv_results = self.search.cv_results_
 			self.best_hyperparams = self.search.best_params_
-			self.best_regressor = self.get_best_params_regressor(self.best_hyperparams)
+			self.best_pipeline = self.search.best_estimator_
+			self.best_regressor = self.best_pipeline.named_steps["regressor"]
+			self.search.fit(self.X.loc[:, self.chosen_features], self.y)
+			self.final_estimator = self.best_pipeline
 		else:
 			if self.config["hyperparams_tuning"] == "best" and self.regr_type in best_hyperparams:
 				self.best_hyperparams = best_hyperparams[self.config["regr_type"]]
-				self.best_regressor = self.get_best_params_regressor(self.best_hyperparams)
+				self.best_regressor = self.get_best_params_regressor()
+				self.steps = []
+				self.steps.append(("scaler", self.scaler))
+				self.steps.append(("dim_reduction", self.dim_reduction))
+				self.steps.append(("regressor", self.best_regressor))
+				self.pipeline = Pipeline(self.steps)
+				self.pipeline.fit(self.X, self.y)
 			else:
 				self.best_regressor = self.regr
 				self.best_hyperparams = self.regr.get_params()
-
-		self.pipeline.named_steps["regressor"] = self.best_regressor
-
-		self.pipeline.fit(self.X, self.y)
+				self.pipeline.fit(self.X, self.y)
+			self.final_estimator = self.pipeline
+		print(self.final_estimator)
 		self.get_feature_importances()
-		self.pipeline.fit(self.X.loc[:, self.chosen_features], self.y)
