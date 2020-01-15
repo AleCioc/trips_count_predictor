@@ -6,11 +6,11 @@
 	"start": [1, 2, 3, 4],
 	"depth": [1],
 	"training_policy": ["sliding","expanding"],
-	"training_size": [168, 336, 504, 672],
+	"training_size": [168, 336, 504, 672, 840, 1008, 1176, 1344],
 	"training_update_t": [1, 24],
 
 	"regr_type": ["rf"],
-    "hyperparams_tuning": [0],
+    "hyperparams_tuning": ["best"],
 	"scaler_type": ["minmax"],
 	"dim_red_type": [""],
 	"dim_red_param": [0]
