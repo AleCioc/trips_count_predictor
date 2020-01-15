@@ -7,7 +7,7 @@ from trips_count_predictor.utils.path_utils import check_create_path
 from trips_count_predictor.config.config import single_run_results_path
 from trips_count_predictor.multivariate.errors import mean_absolute_error
 from trips_count_predictor.multivariate.errors import rmse
-from trips_count_predictor.multivariate.errors import percentage_error
+from trips_count_predictor.multivariate.errors import mean_relative_error
 from trips_count_predictor.multivariate.errors import r2_score
 
 
@@ -45,7 +45,7 @@ class BaselineModel:
 			"start": self.start,
 			"mae": mean_absolute_error(self.y_test, self.y_hat_test),
 			"rmse": rmse(self.y_test, self.y_hat_test),
-			"rel": percentage_error(self.y_test, self.y_hat_test),
+			"rel": mean_relative_error(self.y_test, self.y_hat_test),
 			"r2": r2_score(self.y_test, self.y_hat_test),
 			"validation_time":self.validation_time
 		}

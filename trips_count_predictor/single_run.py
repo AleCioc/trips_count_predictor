@@ -14,7 +14,7 @@ warnings.simplefilter(action='ignore')
 
 loader = CityLoader("Minneapolis")
 trips_count = pd.Series(name="count")
-for month in range(5, 9):
+for month in range(8, 9):
 	trips_count = pd.concat([
 		trips_count,
 		loader.load_resampled_trips_data("city_of_minneapolis", 2019, month, '1h')

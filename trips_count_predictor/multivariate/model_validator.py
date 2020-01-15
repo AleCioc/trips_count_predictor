@@ -10,10 +10,14 @@ from trips_count_predictor.config.config import single_run_results_path
 from trips_count_predictor.multivariate.trainer import TimeSeriesTrainer
 from trips_count_predictor.multivariate.predictor import TimeSeriesPredictor
 from trips_count_predictor.multivariate.data_prep import create_df_features
-from trips_count_predictor.multivariate.errors import mean_absolute_error
-from trips_count_predictor.multivariate.errors import rmse
-from trips_count_predictor.multivariate.errors import percentage_error
 from trips_count_predictor.multivariate.errors import r2_score
+from trips_count_predictor.multivariate.errors import rmse
+from trips_count_predictor.multivariate.errors import mean_absolute_error
+from trips_count_predictor.multivariate.errors import max_absolute_error
+from trips_count_predictor.multivariate.errors import mean_relative_error
+from trips_count_predictor.multivariate.errors import mean_absolute_percentage_error
+from trips_count_predictor.multivariate.errors import sym_mape
+
 from trips_count_predictor.multivariate.plotter import TimeSeriesRegressionPlotter
 
 
@@ -27,7 +31,7 @@ def run_model_validator (validators_input_dict):
 		trainer_single_run_config
 	)
 	validator.run()
-	return validator.get_summary()
+	return validator.summary
 
 
 class ModelValidator:
@@ -153,23 +157,34 @@ class ModelValidator:
 		self.best_hyperparams = pd.DataFrame(self.best_hyperparams)
 		self.save_output()
 
+
+	def get_summary(self):
+
+		y_test_err = self.y_test.loc[self.y_test > 0].iloc[:-2]
+		y_hat_test_err = self.y_hat_test.loc[y_test_err.index]
+
+		abs_errs = abs(y_test_err - y_hat_test_err)
+		print(abs_errs[abs_errs > 100].sort_values())
+		print(abs_errs[abs_errs > 100].sort_index())
+
 		self.regression_plotter = TimeSeriesRegressionPlotter(
-				self.trips_count,
-				self.y_test,
-				self.y_hat_test,
+				y_test_err,
+				y_test_err,
+				y_hat_test_err,
 				self.trainer_config,
 				self.feature_coefs_model
 		)
 		self.regression_plotter.plot_charts()
 
-	def get_summary(self):
-
 		summary_dict = self.trainer_config.copy()
 		summary_dict.update({
-			"mae": mean_absolute_error(self.y_test, self.y_hat_test),
-			"rmse": rmse(self.y_test, self.y_hat_test),
-			"rel": percentage_error(self.y_test, self.y_hat_test),
-			"r2": r2_score(self.y_test, self.y_hat_test)
+			"r2": r2_score(y_test_err, y_hat_test_err),
+			"rmse": rmse(y_test_err, y_hat_test_err),
+			"mae": mean_absolute_error(y_test_err, y_hat_test_err),
+			"mxae": max_absolute_error(y_test_err, y_hat_test_err),
+			"mre": mean_relative_error(y_test_err, y_hat_test_err),
+			"mape": mean_absolute_percentage_error(y_test_err, y_hat_test_err),
+			"smape": sym_mape(y_test_err, y_hat_test_err),
 		})
 		self.summary = pd.Series(summary_dict)
 		if self.trainer_config["hyperparams_tuning"] == 1:

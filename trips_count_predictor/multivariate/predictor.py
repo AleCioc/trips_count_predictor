@@ -2,7 +2,7 @@ import pandas as pd
 
 from trips_count_predictor.multivariate.errors import mean_absolute_error
 from trips_count_predictor.multivariate.errors import rmse
-from trips_count_predictor.multivariate.errors import percentage_error
+from trips_count_predictor.multivariate.errors import mean_relative_error
 from trips_count_predictor.multivariate.errors import r2_score
 
 
@@ -38,10 +38,13 @@ class TimeSeriesPredictor():
 
 	def get_performance(self):
 		summary_dict = {
-			"mae": mean_absolute_error(self.y_test, self.y_hat_test),
-			"rmse": rmse(self.y_test, self.y_hat_test),
-			"rel": percentage_error(self.y_test, self.y_hat_test),
-			"r2": r2_score(self.y_test, self.y_hat_test)
+			"r2": r2_score(y_test_err, y_hat_test_err),
+			"rmse": rmse(y_test_err, y_hat_test_err),
+			"mae": mean_absolute_error(y_test_err, y_hat_test_err),
+			"mxae": max_absolute_error(y_test_err, y_hat_test_err),
+			"mre": mean_relative_error(y_test_err, y_hat_test_err),
+			"mape": mean_absolute_percentage_error(y_test_err, y_hat_test_err),
+			"smape": sym_mape(y_test_err, y_hat_test_err),
 		}
 		self.summary = pd.Series(summary_dict)
 		return self.summary
