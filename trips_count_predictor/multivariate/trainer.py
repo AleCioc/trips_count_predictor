@@ -203,5 +203,4 @@ class TimeSeriesTrainer:
 				self.best_hyperparams = self.regr.get_params()
 				self.pipeline.fit(self.X, self.y)
 			self.final_estimator = self.pipeline
-		print(self.final_estimator)
 		self.get_feature_importances()

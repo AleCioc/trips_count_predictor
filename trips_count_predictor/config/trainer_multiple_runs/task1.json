@@ -6,10 +6,10 @@
 	"start": [1],
 	"depth": [1],
 	"training_policy": ["sliding", "expanding"],
-	"training_size": [672],
+	"training_size": [168],
 	"training_update_t": [24],
 
-	"regr_type": ["lr", "rf", "lsvr"],
+	"regr_type": ["lr", "rf", "lsvr", "svr"],
     "hyperparams_tuning": [0, 1],
 	"scaler_type": ["std", "minmax"],
 	"dim_red_type": [""],

@@ -38,8 +38,6 @@ class ModelValidator:
 		trainer_config
 	):
 
-		print(trainer_config)
-
 		self.trips_count = trips_count
 		self.trainer_config = trainer_config
 
