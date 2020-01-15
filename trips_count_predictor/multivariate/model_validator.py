@@ -162,10 +162,8 @@ class ModelValidator:
 
 		y_test_err = self.y_test.loc[self.y_test > 0].iloc[:-2]
 		y_hat_test_err = self.y_hat_test.loc[y_test_err.index]
+		errs = y_test_err - y_hat_test_err
 
-		abs_errs = abs(y_test_err - y_hat_test_err)
-		print(abs_errs[abs_errs > 100].sort_values())
-		print(abs_errs[abs_errs > 100].sort_index())
 
 		self.regression_plotter = TimeSeriesRegressionPlotter(
 				y_test_err,
