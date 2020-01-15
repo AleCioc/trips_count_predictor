@@ -5,6 +5,7 @@ def mean_absolute_percentage_error(y_true, y_pred):
     y_true, y_pred = y_true.values, y_pred.values
     return np.mean(np.abs((y_true - y_pred)) / y_true) * 100
 
+
 def sym_mape(y_true, y_pred):
     return 100 * np.mean(2*np.abs(y_true - y_pred)/(y_true + y_pred))
 

@@ -28,6 +28,6 @@ hyperparams_grids = {
 	},
 	"rf": {
 		"random_state": [1],
-		"n_estimators": [60, 80, 100],
+		"n_estimators": [75, 80, 85, 90],
 	}
 }
