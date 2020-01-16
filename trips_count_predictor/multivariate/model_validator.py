@@ -121,7 +121,7 @@ class ModelValidator:
 			self.best_hyperparams += [trainer.best_hyperparams]
 
 			predictor = TimeSeriesPredictor(
-				X_test,
+				X_test.loc[:, trainer.chosen_features],
 				self.y.iloc[test_index],
 				self.trainer_config,
 				trainer
