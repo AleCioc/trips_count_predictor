@@ -211,3 +211,4 @@ class TimeSeriesTrainer:
 				self.pipeline.fit(self.X, self.y)
 			self.final_estimator = self.pipeline
 		self.get_feature_importances()
+		self.pipeline.fit(self.X.loc[:, self.chosen_features], self.y)
