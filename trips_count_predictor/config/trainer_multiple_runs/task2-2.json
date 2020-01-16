@@ -3,11 +3,11 @@
 	"use_y": [0, 1],
 	"use_calendar": [1],
 
-	"start": [1],
-	"depth": [24, 168, 672],
+	"start": [1, 2, 3, 4, 5, 6, 7, 8],
+	"depth": [168, 336, 504, 672, 840, 1008, 1176, 1344],
 	"training_policy": ["sliding"],
 	"training_size": [1344],
-	"training_update_t": [24],
+	"training_update_t": [1],
 
   	"regr_type": ["rf"],
     "hyperparams_tuning": ["best"],

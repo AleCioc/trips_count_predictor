@@ -137,8 +137,9 @@ class TimeSeriesTrainer:
 	def get_feature_importances(self):
 
 		if self.dim_red_type in ["crosscorr", "mutinf"]:
-			self.chosen_features = self.X.loc[:, self.dim_reduction.get_support()].columns
-			self.dim_red_scores = pd.Series(self.dim_reduction.scores_, index=self.X.columns)
+			self.chosen_features = self.X.loc[:, self.final_estimator.named_steps["dim_reduction"].get_support()].columns
+			self.dim_red_scores = pd.Series(self.final_estimator.named_steps["dim_reduction"].scores_, index=self.X.columns)
+			self.dim_red_scores = self.dim_red_scores.loc[self.chosen_features]
 
 		if self.regr_type in ['lr', 'lsvr']:
 			self.regression_coefs = pd.Series(
@@ -211,4 +212,4 @@ class TimeSeriesTrainer:
 				self.pipeline.fit(self.X, self.y)
 			self.final_estimator = self.pipeline
 		self.get_feature_importances()
-		self.pipeline.fit(self.X.loc[:, self.chosen_features], self.y)
+		self.final_estimator.fit(self.X.loc[:, self.chosen_features], self.y)
