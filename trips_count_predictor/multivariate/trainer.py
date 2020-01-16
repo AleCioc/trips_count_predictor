@@ -91,7 +91,7 @@ class TimeSeriesTrainer:
 
 	def get_dim_reduction(self):
 
-		if self.dim_red_param > len(self.X.columns):
+		if self.dim_red_param >= len(self.X.columns):
 			self.dim_red_param = len(self.X.columns)
 
 		def crosscorr(X, y):

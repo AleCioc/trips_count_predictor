@@ -1,10 +1,10 @@
 {
-	"use_weather": [0, 1],
-	"use_y": [0, 1],
+	"use_weather": [0],
+	"use_y": [0],
 	"use_calendar": [1],
 
 	"start": [1],
-	"depth": [168, 336, 504, 672],
+	"depth": [168],
 	"training_policy": ["sliding"],
 	"training_size": [1344],
 	"training_update_t": [24],
