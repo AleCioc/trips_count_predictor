@@ -121,8 +121,7 @@ class ModelValidator:
 				trainer.run()
 				self.best_hyperparams += [trainer.best_hyperparams]
 			except:
-				print(train_index, X_train.shape)
-				print(self.use_y, self.use_weather, self.use_calendar)
+				print(X_train.shape, self.use_y, self.use_weather, self.use_calendar)
 
 			predictor = TimeSeriesPredictor(
 				X_test.loc[:, trainer.chosen_features],
@@ -167,7 +166,6 @@ class ModelValidator:
 		y_test_err = self.y_test.loc[self.y_test > 0].iloc[24:-24]
 		y_hat_test_err = self.y_hat_test.loc[y_test_err.index]
 		errs = y_test_err - y_hat_test_err
-
 
 		self.regression_plotter = TimeSeriesRegressionPlotter(
 				y_test_err,
