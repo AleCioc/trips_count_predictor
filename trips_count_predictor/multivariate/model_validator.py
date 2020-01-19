@@ -51,6 +51,7 @@ class ModelValidator:
 		self.use_y = trainer_config["use_y"]
 		self.use_weather = trainer_config["use_weather"]
 		self.use_calendar = trainer_config["use_calendar"]
+		print(self.use_y, self.use_weather, self.use_calendar)
 
 		self.training_policy = trainer_config["training_policy"]
 		self.training_size = trainer_config["training_size"]

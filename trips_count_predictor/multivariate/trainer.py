@@ -134,12 +134,14 @@ class TimeSeriesTrainer:
 			return_train_score=False,
 		)
 
-	def get_feature_importances(self):
+	def get_dim_red_results(self):
 
 		if self.dim_red_type in ["crosscorr", "mutinf"]:
 			self.chosen_features = self.X.loc[:, self.final_estimator.named_steps["dim_reduction"].get_support()].columns
 			self.dim_red_scores = pd.Series(self.final_estimator.named_steps["dim_reduction"].scores_, index=self.X.columns)
 			self.dim_red_scores = self.dim_red_scores.loc[self.chosen_features]
+
+	def get_regression_coefs(self):
 
 		if self.regr_type in ['lr', 'lsvr']:
 			self.regression_coefs = pd.Series(
@@ -210,5 +212,6 @@ class TimeSeriesTrainer:
 				self.best_hyperparams = self.regr.get_params()
 				self.pipeline.fit(self.X, self.y)
 			self.final_estimator = self.pipeline
-		self.get_feature_importances()
+		self.get_dim_red_results()
 		self.final_estimator.fit(self.X.loc[:, self.chosen_features], self.y)
+		self.get_regression_coefs()
