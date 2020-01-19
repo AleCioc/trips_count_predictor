@@ -4,10 +4,10 @@
 	"use_calendar": [1, ["hour"], ["hour", "weekend"], ["hour", "weekday"]],
 
 	"start": [1],
-	"depth": [24],
+	"depth": [1],
 	"training_policy": ["sliding"],
 	"training_size": [1344],
-	"training_update_t": [1],
+	"training_update_t": [24],
 
   	"regr_type": ["rf"],
     "hyperparams_tuning": ["best"],
