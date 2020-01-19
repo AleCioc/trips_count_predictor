@@ -1,5 +1,5 @@
 {
-	"use_weather": [0, 1],
+	"use_weather": [0, 1, ["relative_humidity"]],
 	"use_y": [0, 1],
 	"use_calendar": [1],
 
@@ -13,5 +13,5 @@
     "hyperparams_tuning": ["best"],
 	"scaler_type": ["minmax"],
 	"dim_red_type": ["crosscorr"],
-	"dim_red_param": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+	"dim_red_param": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 }
