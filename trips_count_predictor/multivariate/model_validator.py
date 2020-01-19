@@ -79,7 +79,7 @@ class ModelValidator:
 
 		self.summary = pd.Series()
 
-		model_conf_string = "_".join([str(v) for v in self.trainer_config.values()])
+		model_conf_string = "_".join([str(v) for v in self.trainer_config.values()]).replace("'", "")
 		check_create_path(single_run_results_path)
 		self.output_path = os.path.join(
 			single_run_results_path,
