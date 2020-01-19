@@ -17,7 +17,7 @@ def create_df_features(trips_count, trainer_config):
 	depth = trainer_config['depth']
 	df_features = pd.DataFrame(index=date_column)
 
-	if trainer_config['use_calendar'] == 1:
+	if trainer_config['use_calendar'] != 0:
 		df_features["weekday"] = [int(date_column[i].strftime("%w")) for i in range(len(date_column))]
 		df_features["hour"] = [int(date_column[i].strftime("%H")) for i in range(len(date_column))]
 		df_features["weekend"] = df_features["weekday"]
@@ -39,7 +39,7 @@ def create_df_features(trips_count, trainer_config):
 			weather = weather[trainer_config['use_weather']]
 		df_features = df_features.join(weather)
 
-	if trainer_config['use_y'] == 1:
+	if trainer_config['use_y'] != 0:
 		df_features = pd.concat([
 			df_features, get_past_lags(trips_count, start, depth)],
 			axis=1, sort=False
