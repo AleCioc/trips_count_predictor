@@ -51,7 +51,6 @@ class ModelValidator:
 		self.use_y = trainer_config["use_y"]
 		self.use_weather = trainer_config["use_weather"]
 		self.use_calendar = trainer_config["use_calendar"]
-		print(self.use_y, self.use_weather, self.use_calendar)
 
 		self.training_policy = trainer_config["training_policy"]
 		self.training_size = trainer_config["training_size"]
@@ -113,13 +112,17 @@ class ModelValidator:
 			X_train = self.X.iloc[train_index].copy()
 			X_test = self.X.iloc[test_index].copy()
 
-			trainer = TimeSeriesTrainer(
-				X_train,
-				self.y.iloc[train_index],
-				self.trainer_config
-			)
-			trainer.run()
-			self.best_hyperparams += [trainer.best_hyperparams]
+			try:
+				trainer = TimeSeriesTrainer(
+					X_train,
+					self.y.iloc[train_index],
+					self.trainer_config
+				)
+				trainer.run()
+				self.best_hyperparams += [trainer.best_hyperparams]
+			except:
+				print(train_index, X_train.shape)
+				print(self.use_y, self.use_weather, self.use_calendar)
 
 			predictor = TimeSeriesPredictor(
 				X_test.loc[:, trainer.chosen_features],
