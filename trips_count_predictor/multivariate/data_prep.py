@@ -47,4 +47,4 @@ def create_df_features(trips_count, trainer_config):
 		if type(trainer_config['use_y']) == list:
 			df_features = df_features[trainer_config['use_y']]
 
-	return df_features.dropna()
+	return df_features.dropna(axis=1, how="all").dropna()
