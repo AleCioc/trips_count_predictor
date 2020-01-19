@@ -1,0 +1,17 @@
+{
+	"use_weather": [0, 1, ["relative_humidity"], ["temperature"], ["rain_boolean"], ["sky_conditions"], ["wind_speed"]],
+	"use_y": [0, 1],
+	"use_calendar": [1, ["hour"], ["hour", "weekend"], ["hour", "weekday"]],
+
+	"start": [1],
+	"depth": [24],
+	"training_policy": ["sliding"],
+	"training_size": [1344],
+	"training_update_t": [1],
+
+  	"regr_type": ["rf"],
+    "hyperparams_tuning": ["best"],
+	"scaler_type": ["minmax"],
+	"dim_red_type": [""],
+	"dim_red_param": [0]
+}

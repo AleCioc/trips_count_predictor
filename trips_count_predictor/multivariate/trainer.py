@@ -39,8 +39,8 @@ class TimeSeriesTrainer:
 			trainer_config
 	):
 
-		self.X = X_train.dropna()
-		self.y = y_train.dropna()
+		self.X = X_train
+		self.y = y_train
 
 		self.config = trainer_config
 
@@ -173,7 +173,6 @@ class TimeSeriesTrainer:
 		self.get_scorers()
 		self.get_scaler()
 		self.get_dim_reduction()
-
 
 		if self.config["hyperparams_tuning"] == 1:
 			if self.config["scaler_type"] != "":
