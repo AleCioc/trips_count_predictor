@@ -1,13 +1,13 @@
 {
 	"use_weather": [0, ["relative_humidity"], ["temperature"], ["rain_boolean"], ["sky_conditions"], ["wind_speed"]],
-	"use_y": [0, ["count_-1"], ["count_-1", "count_-24"], ["count_-1", "count_-24", "count_-48"], ["count_-1", "count_-24", "count_-168"]],
+	"use_y": [0, 1],
 	"use_calendar": [1, ["hour"], ["hour", "weekend"], ["hour", "weekday"]],
 
 	"start": [1],
-	"depth": [168],
+	"depth": [1, 2, 3, 4],
 	"training_policy": ["sliding"],
 	"training_size": [1344],
-	"training_update_t": [1],
+	"training_update_t": [24],
 
   	"regr_type": ["rf"],
     "hyperparams_tuning": ["best"],
