@@ -4,14 +4,14 @@
 	"use_calendar": [1],
 
 	"start": [1],
-	"depth": [168, 336, 504, 672],
+	"depth": [168, 336, 504, 672, 840, 1008, 1176, 1344],
 	"training_policy": ["sliding"],
-	"training_size": [1344],
+	"training_size": [1345],
 	"training_update_t": [24],
 
   	"regr_type": ["rf"],
     "hyperparams_tuning": ["best"],
 	"scaler_type": ["minmax"],
 	"dim_red_type": ["crosscorr", "mutinf", "model"],
-	"dim_red_param": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+	"dim_red_param": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 }
