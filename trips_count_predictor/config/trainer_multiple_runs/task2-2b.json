@@ -6,7 +6,7 @@
 	"start": [1],
 	"depth": [168, 336, 504, 672, 840, 1008, 1176, 1344],
 	"training_policy": ["sliding"],
-	"training_size": [1345],
+	"training_size": [1344],
 	"training_update_t": [24],
 
   	"regr_type": ["rf"],
