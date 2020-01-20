@@ -36,7 +36,7 @@ def run_model_validator (validators_input_dict):
 
 class ModelValidator:
 
-	def __init__ (
+	def __init__(
 		self,
 		trips_count,
 		trainer_config
@@ -112,16 +112,13 @@ class ModelValidator:
 			X_train = self.X.iloc[train_index].copy()
 			X_test = self.X.iloc[test_index].copy()
 
-			try:
-				trainer = TimeSeriesTrainer(
-					X_train,
-					self.y.iloc[train_index],
-					self.trainer_config
-				)
-				trainer.run()
-				self.best_hyperparams += [trainer.best_hyperparams]
-			except:
-				print(X_train.shape, self.use_y, self.use_weather, self.use_calendar)
+			trainer = TimeSeriesTrainer(
+				X_train,
+				self.y.iloc[train_index],
+				self.trainer_config
+			)
+			trainer.run()
+			self.best_hyperparams += [trainer.best_hyperparams]
 
 			predictor = TimeSeriesPredictor(
 				X_test.loc[:, trainer.chosen_features],

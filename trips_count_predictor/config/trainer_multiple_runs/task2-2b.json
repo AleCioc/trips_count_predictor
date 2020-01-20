@@ -1,10 +1,10 @@
 {
-	"use_weather": [0, 1, ["relative_humidity"]],
+	"use_weather": [0, 1, ["relative_humidity"], ["rain_boolean"], ["relative_humidity", "rain_boolean"]],
 	"use_y": [0, 1],
 	"use_calendar": [1],
 
 	"start": [1],
-	"depth": [672, 1344],
+	"depth": [168, 336, 504, 672],
 	"training_policy": ["sliding"],
 	"training_size": [1344],
 	"training_update_t": [24],
@@ -12,6 +12,6 @@
   	"regr_type": ["rf"],
     "hyperparams_tuning": ["best"],
 	"scaler_type": ["minmax"],
-	"dim_red_type": ["crosscorr"],
-	"dim_red_param": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+	"dim_red_type": ["crosscorr", "mutinf", "model"],
+	"dim_red_param": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 }

@@ -18,6 +18,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 from sklearn.decomposition import PCA
 from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import SelectFromModel
 from sklearn.feature_selection import mutual_info_regression
 
 from sklearn.model_selection import GridSearchCV
@@ -107,6 +108,12 @@ class TimeSeriesTrainer:
 				mutual_info_regression,
 				self.dim_red_param
 			)
+		elif self.dim_red_type == "model":
+			self.dim_reduction = SelectFromModel(
+				self.regr,
+				threshold=-np.inf,
+				max_features=self.dim_red_param
+			)
 		elif self.dim_red_type == "pca":
 			self.dim_reduction = PCA(
 				n_components=self.dim_red_param
@@ -136,8 +143,9 @@ class TimeSeriesTrainer:
 
 	def get_dim_red_results(self):
 
-		if self.dim_red_type in ["crosscorr", "mutinf"]:
+		if self.dim_red_type in ["crosscorr", "mutinf", "model"]:
 			self.chosen_features = self.X.loc[:, self.final_estimator.named_steps["dim_reduction"].get_support()].columns
+		if self.dim_red_type in ["crosscorr", "mutinf"]:
 			self.dim_red_scores = pd.Series(self.final_estimator.named_steps["dim_reduction"].scores_, index=self.X.columns)
 			self.dim_red_scores = self.dim_red_scores.loc[self.chosen_features]
 

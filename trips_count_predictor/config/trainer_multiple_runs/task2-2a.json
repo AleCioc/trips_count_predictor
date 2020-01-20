@@ -1,5 +1,5 @@
 {
-	"use_weather": [0, ["relative_humidity"], ["temperature"], ["rain_boolean"], ["sky_conditions"], ["wind_speed"]],
+	"use_weather": [0, 1, ["relative_humidity"], ["temperature"], ["rain_boolean"], ["sky_conditions"], ["wind_speed"]],
 	"use_y": [0, 1],
 	"use_calendar": [1, ["hour"], ["hour", "weekend"], ["hour", "weekday"]],
 
