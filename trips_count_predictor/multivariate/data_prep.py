@@ -26,6 +26,7 @@ def create_df_features(trips_count, trainer_config):
 		df_features["weekend"] = df_features["weekend"]
 		if type(trainer_config['use_calendar']) == list:
 			df_features = df_features[trainer_config['use_calendar']]
+		print(df_features.shape)
 
 	if trainer_config['use_weather'] != 0:
 		loader = CityLoader("Minneapolis")
@@ -43,8 +44,16 @@ def create_df_features(trips_count, trainer_config):
 		df_features = pd.concat([
 			df_features, get_past_lags(trips_count, start, depth)],
 			axis=1, sort=False
-		).dropna()
+		)
+		if "hour" in list(df_features.columns):
+			for hour, hour_df in df_features.groupby("hour"):
+				df_features.loc[hour_df.index] = hour_df.apply(
+					lambda x: x.fillna(x.mean()), axis=0
+				)
+		else:
+			df_features = df_features.dropna()
 		if type(trainer_config['use_y']) == list:
 			df_features = df_features[trainer_config['use_y']]
+		print(df_features.shape)
 
 	return df_features.dropna(axis=1, how="all").dropna()

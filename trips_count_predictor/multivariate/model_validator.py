@@ -60,6 +60,8 @@ class ModelValidator:
 			self.trips_count,
 			self.trainer_config
 		)
+		print(self.X.shape)
+		print(self.trips_count.shape[0] - self.depth)
 		self.X_train = pd.DataFrame()
 		self.X_test = pd.DataFrame()
 
@@ -107,6 +109,7 @@ class ModelValidator:
 		for train_index, test_index in tscv.split(self.X):
 
 			if len(train_index) < self.training_size:
+				print(len(train_index))
 				continue
 
 			X_train = self.X.iloc[train_index].copy()
@@ -147,7 +150,7 @@ class ModelValidator:
 			split_seq_n_index += [self.y.iloc[test_index].index[0]]
 
 		print(
-			self.trainer_config["regr_type"],
+			self.trainer_config,
 			self.X_test.shape,
 			(datetime.datetime.now()-start_time).total_seconds()
 		)

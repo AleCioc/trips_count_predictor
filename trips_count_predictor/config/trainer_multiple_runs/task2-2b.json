@@ -1,6 +1,6 @@
 {
 	"use_weather": [0, 1, ["relative_humidity"], ["rain_boolean"], ["relative_humidity", "rain_boolean"]],
-	"use_y": [0, 1],
+	"use_y": [1],
 	"use_calendar": [1],
 
 	"start": [1],
