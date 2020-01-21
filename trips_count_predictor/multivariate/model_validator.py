@@ -114,6 +114,7 @@ class ModelValidator:
 
 			trainer = TimeSeriesTrainer(
 				X_train,
+				X_train,
 				self.y.iloc[train_index],
 				self.trainer_config
 			)

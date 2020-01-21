@@ -26,7 +26,6 @@ def create_df_features(trips_count, trainer_config):
 		df_features["weekend"] = df_features["weekend"]
 		if type(trainer_config['use_calendar']) == list:
 			df_features = df_features[trainer_config['use_calendar']]
-		print(df_features.shape)
 
 	if trainer_config['use_weather'] != 0:
 		loader = CityLoader("Minneapolis")
@@ -47,6 +46,5 @@ def create_df_features(trips_count, trainer_config):
 		)
 		if type(trainer_config['use_y']) == list:
 			df_features = df_features[trainer_config['use_y']]
-		print(df_features.shape)
 
 	return df_features.dropna(axis=1, how="all").dropna()
