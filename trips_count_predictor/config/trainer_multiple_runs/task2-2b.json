@@ -1,10 +1,10 @@
 {
-	"use_weather": [0, 1, ["relative_humidity"], ["rain_boolean"], ["relative_humidity", "rain_boolean"]],
+	"use_weather": [1, ["relative_humidity", "rain_boolean"]],
 	"use_y": [1],
 	"use_calendar": [1],
 
 	"start": [1],
-	"depth": [168, 336, 504, 672, 840, 1008, 1176, 1344],
+	"depth": [504, 672, 840, 1008],
 	"training_policy": ["sliding"],
 	"training_size": [1344],
 	"training_update_t": [24],

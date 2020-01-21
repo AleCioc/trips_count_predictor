@@ -45,13 +45,6 @@ def create_df_features(trips_count, trainer_config):
 			df_features, get_past_lags(trips_count, start, depth)],
 			axis=1, sort=False
 		)
-		if "hour" in list(df_features.columns):
-			for hour, hour_df in df_features.groupby("hour"):
-				df_features.loc[hour_df.index] = hour_df.apply(
-					lambda x: x.fillna(x.mean()), axis=0
-				)
-		else:
-			df_features = df_features.dropna()
 		if type(trainer_config['use_y']) == list:
 			df_features = df_features[trainer_config['use_y']]
 		print(df_features.shape)
