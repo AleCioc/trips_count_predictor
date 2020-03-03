@@ -128,8 +128,8 @@ class ModelValidator:
 			)
 			predictor.predict()
 
-			self.X_test = pd.concat([self.X_test, predictor.X_test])
-			self.y_test = pd.concat([self.y_test, predictor.y_test])
+			self.X_test = pd.concat([self.X_test, predictor.X_test], sort=False)
+			self.y_test = pd.concat([self.y_test, predictor.y_test], sort=False)
 			self.y_hat_test = pd.concat([self.y_hat_test, predictor.y_hat_test])
 			self.y_hat_test.loc[self.y_hat_test < 0] = 0
 			self.cv_results = pd.concat(
